@@ -1,0 +1,23 @@
+{
+  "name": "mean-tutorial",
+  "description": "",
+  "main": "index.js",
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.0",
+    "angularjs-geolocation": "^0.1.1",
+    "bootstrap": "^3.3.6",
+    "modernizr": "^3.3.1",
+    "holderjs": "^2.9.1",
+    "angular-ui-router": "^0.2.18"
+  }
+}
