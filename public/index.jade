@@ -1,0 +1,110 @@
+doctype
+html(ng-app="meanShoppingApp")
+	head
+		meta(charset="UTF-8")
+		meta(name="description" content="Mean Shopping App")
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		meta(name="keywords" content="")
+		meta(name="author" content="Clinton D/'souza")
+		title MEAN Shopping Demo
+
+		//- Stylesheets
+		link(rel='stylesheet' href='../bower_components/bootstrap/dist/css/bootstrap.css')
+		link(rel='stylesheet' href='css/styles.css')
+
+		//- Uncomment in Production
+		//- link(rel='stylesheet' href='css/styles.min.css')
+		//- link(rel='stylesheet' href='css/vendor.css')
+
+	body
+		nav.navbar.navbar-default
+			.container-fluid
+
+				.navbar-header
+					button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1', aria-expanded='false')
+						span.sr-only Toggle navigation
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					a.navbar-brand(href='#') Brand
+				// Collect the nav links, forms, and other content for toggling
+				#bs-example-navbar-collapse-1.collapse.navbar-collapse
+					ul.nav.navbar-nav
+						li.active
+							a(href='#') Link
+						li
+							a(href='#') Link
+					form.navbar-form.navbar-left(role='search')
+						.form-group
+							input.form-control(type='text', placeholder='Search')
+						button.btn.btn-default(type='submit') Submit
+					ul.nav.navbar-nav.navbar-right(ng-controller='authenticationController')
+						li
+							a(href='#' data-toggle="modal" data-target="#Login") Log In
+						li
+							a(href='#' data-toggle="modal" data-target="#SignUp") Sign Up
+
+						.modal.fade#SignUp( tabindex="-1")
+							.modal-dialog
+								.modal-content
+									.modal-header
+										button(type="button" class="close" data-dismiss="modal")
+											span &times;
+										h4 Sign Up For Free
+									.modal-body
+										form(angular-validator-submit="signUp()" name="signUpForm" novalidate angular-validator)
+											h3 Please enter your following details
+											.form-group
+												label( control-label for='username') Name
+												input.form-control(type='text', name='username', validate-on='dirty', ng-model='signup.username', ng-pattern='/^[A-z ]+$/', invalid-message="'Enter a valid Name'", required-message="'Name is required'", required)
+											.form-group
+												label( control-label for='phone_number') Phone Number
+												input.form-control(type='text', name='phone_number', validate-on='dirty', ng-model='signup.phone_number', ng-pattern='/^[0-9]+$/', invalid-message="'Enter a valid phone number'", required-message="'Phone number is required'", required)
+											.form-group
+												label( control-label for='email_id') Email ID
+												input.form-control(type='email', name='email_id', validate-on='dirty', ng-model='signup.email_id', invalid-message="'Enter a valid Email ID'", required-message="'Email ID is required'", required)
+											.form-group
+												label( control-label for='password') Password
+												input.form-control(type='password', name='password', validate-on='dirty', ng-model='signup.password', validator = "passwordValidator(signup.password) === true",invalid-message = "passwordValidator(signup.password)", required)
+											.form-group
+												label( control-label for='confirmPassword') Confirm Password
+												input.form-control(type='password', name='confirmPassword', validate-on='dirty', ng-model='signup.confirmPassword',validator = "signup.password === signup.confirmPassword",
+						                    invalid-message = "'Passwords do not match!'", required)
+											
+
+											//- .modal-footer
+											button(type="button" class="btn btn-default" data-dismiss="modal") Close
+											button(type='submit',ng-disabled='signUpForm.$invalid' class="btn btn-primary") Sign Up
+
+					.modal.fade#Login( tabindex="-1")
+						.modal-dialog
+							.modal-content
+								.modal-header
+									button(type="button" class="close" data-dismiss="modal")
+										span &times;
+									h4 Login
+								.modal-body
+
+								.modal-footer
+									button(type="button" class="btn btn-default" data-dismiss="modal") Close
+									button(type="button" class="btn btn-primary") Login
+								
+
+		main
+			ui-view
+
+	
+		script(src="../bower_components/holderjs/holder.min.js")
+		script(src="../bower_components/modernizr/bin/modernizr")
+		script(src="../bower_components/jquery/dist/jquery.min.js")
+		script(src='../bower_components/bootstrap/dist/js/bootstrap.min.js')
+		script(src="../bower_components/angular/angular.min.js")
+		script(src="../bower_components/angular-ui-router/release/angular-ui-router.min.js")
+		script(src="../bower_components/tg-angular-validator/dist/angular-validator.min.js")
+
+		script(src="js/main.js")
+
+
+		//- Uncomment in Production
+		//- script(src="js/main.min.js")
+		//- script(src="js/vendor.js")
