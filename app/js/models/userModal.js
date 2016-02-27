@@ -1,5 +1,5 @@
 (function() {
-  var SALT_WORK_FACTOR, Schema, UserSchema, bcrypt, mongoose;
+  var SALT_WORK_FACTOR, Schema, UserSchema, bcrypt, config, mongoose;
 
   mongoose = require('mongoose');
 
@@ -7,7 +7,9 @@
 
   bcrypt = require('bcrypt-nodejs');
 
-  SALT_WORK_FACTOR = 10;
+  config = require('config');
+
+  SALT_WORK_FACTOR = config.get('Security.SALT_WORK_FACTOR');
 
   UserSchema = new Schema({
     username: {
@@ -20,7 +22,8 @@
     },
     email_id: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     },
     address: {
       type: String

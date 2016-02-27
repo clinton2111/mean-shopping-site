@@ -15,6 +15,20 @@
             return q.reject(error);
           });
           return q.promise;
+        },
+        login: function(credentials) {
+          var q;
+          q = $q.defer();
+          $http({
+            url: '/login',
+            data: credentials,
+            method: 'post'
+          }).then(function(data) {
+            return q.resolve(data);
+          }, function(error) {
+            return q.reject(error);
+          });
+          return q.promise;
         }
       };
     }

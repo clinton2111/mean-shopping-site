@@ -15,6 +15,16 @@
           return console.log(error);
         });
       };
+      $scope.logIn = function() {
+        $('#Login').modal('hide');
+        return authenticationService.login($scope.login).then(function(data) {
+          $scope.login.email_id = '';
+          $scope.login.password = '';
+          return console.log(data);
+        }, function(error) {
+          return console.log(error);
+        });
+      };
       return $scope.passwordValidator = function(password) {
         if (!password) {
           return;

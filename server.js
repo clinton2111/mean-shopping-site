@@ -7,11 +7,13 @@ var morgan          = require('morgan');
 var bodyParser      = require('body-parser');
 var methodOverride  = require('method-override');
 var app             = express();
+var jwt    			= require('jsonwebtoken'); // used to create, sign, and verify tokens
+var config 			= require('config')
 
 // Express Configuration
 // -----------------------------------------------------
 // Sets the connection to MongoDB
-mongoose.connect("mongodb://localhost/MeanShoppingApp");
+mongoose.connect(config.get('Database'));
 
 // Logging and Parsing
 app.use(express.static(__dirname + '/public'));                 // sets the static files location to public
@@ -22,6 +24,7 @@ app.use(bodyParser.urlencoded({extended: true}));               // parse applica
 app.use(bodyParser.text());                                     // allows bodyParser to look at raw text
 app.use(bodyParser.json({ type: 'application/vnd.api+json'}));  // parse application/vnd.api+json as json
 app.use(methodOverride());
+app.set('routerInstance',express.Router())
 
 // Routes
 // ------------------------------------------------------

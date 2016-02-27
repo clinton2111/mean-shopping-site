@@ -18,6 +18,8 @@
     "modernizr": "^3.3.1",
     "holderjs": "^2.9.1",
     "angular-ui-router": "^0.2.18",
-    "tg-angular-validator": "^1.2.8"
+    "tg-angular-validator": "^1.2.8",
+    "underscore": "^1.8.3",
+    "moment": "^2.11.2"
   }
 }

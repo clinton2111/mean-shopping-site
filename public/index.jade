@@ -53,7 +53,7 @@ html(ng-app="meanShoppingApp")
 										h4 Sign Up For Free
 									.modal-body
 										form(angular-validator-submit="signUp()" name="signUpForm" novalidate angular-validator)
-											h3 Please enter your following details
+											h4 Please enter your following details
 											.form-group
 												label( control-label for='username') Name
 												input.form-control(type='text', name='username', validate-on='dirty', ng-model='signup.username', ng-pattern='/^[A-z ]+$/', invalid-message="'Enter a valid Name'", required-message="'Name is required'", required)
@@ -72,22 +72,34 @@ html(ng-app="meanShoppingApp")
 						                    invalid-message = "'Passwords do not match!'", required)
 											
 
-											//- .modal-footer
-											button(type="button" class="btn btn-default" data-dismiss="modal") Close
-											button(type='submit',ng-disabled='signUpForm.$invalid' class="btn btn-primary") Sign Up
+											.modal-footer
+												.form-group
+													button(type="button" class="btn btn-default" data-dismiss="modal") Close
+													button(type='submit',ng-disabled='signUpForm.$invalid' class="btn btn-primary") Sign Up
 
-					.modal.fade#Login( tabindex="-1")
-						.modal-dialog
-							.modal-content
-								.modal-header
-									button(type="button" class="close" data-dismiss="modal")
-										span &times;
-									h4 Login
-								.modal-body
+						.modal.fade#Login( tabindex="-1")
+							.modal-dialog
+								.modal-content
+									.modal-header
+										button(type="button" class="close" data-dismiss="modal")
+											span &times;
+										h4 Login
+									.modal-body
+										form(angular-validator-submit="logIn()" name="loginForm" novalidate angular-validator)
+												h4 Please enter your login details
+												.form-group
+													label( control-label for='email_id') Name
+													input.form-control(type='email', name='email_id', validate-on='dirty', ng-model='login.email_id',invalid-message="'Enter a valid Email ID'", required-message="'Email ID is required'", required)
+												.form-group
+													label( control-label for='password') Password
+													input.form-control(type='password', name='password', validate-on='dirty', ng-model='login.password', required-message="'Password is required'", required)
 
-								.modal-footer
-									button(type="button" class="btn btn-default" data-dismiss="modal") Close
-									button(type="button" class="btn btn-primary") Login
+												.modal-footer
+													.form-group
+														button(type="button" class="btn btn-default" data-dismiss="modal") Close
+														button(type='submit',ng-disabled='loginForm.$invalid' class="btn btn-primary") Login
+
+								
 								
 
 		main

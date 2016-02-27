@@ -15,6 +15,17 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 		, (error)->
 			console.log error
 
+	$scope.logIn=()->
+		$('#Login').modal('hide')
+		authenticationService.login($scope.login)
+		.then (data)->
+			$scope.login.email_id = ''
+			$scope.login.password = ''
+			console.log data
+		, (error)->
+			console.log error
+
+
 	$scope.passwordValidator = (password) ->
 		if !password
 			return

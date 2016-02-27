@@ -2,7 +2,9 @@
 mongoose = require 'mongoose'
 Schema = mongoose.Schema
 bcrypt = require 'bcrypt-nodejs'
-SALT_WORK_FACTOR = 10
+config = require 'config'
+SALT_WORK_FACTOR = config.get('Security.SALT_WORK_FACTOR')
+
 
 # Creates a User Schema. This will be the basis of how user data is stored in the db
 UserSchema = new Schema
@@ -15,6 +17,7 @@ UserSchema = new Schema
 	email_id:
 		type:String
 		required:true
+		unique:true
 	address:
 		type:String
 	phone_number:
@@ -51,6 +54,7 @@ UserSchema.methods.comparePassword = (candidatePassword,cb)->
 	bcrypt.compare candidatePassword,this.password,(err, isMatch)->
 		if err then return cb(err)
 		cb null,isMatch
+
 
 # Exports the UserSchema for use elsewhere. Sets the MongoDB collection to be used as: "shoppingsite-users"
 module.exports = mongoose.model 'shoppingsite-user', UserSchema
