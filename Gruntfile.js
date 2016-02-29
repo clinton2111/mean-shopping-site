@@ -8,8 +8,8 @@ module.exports = function(grunt) {
 
 
     //CSS and JS dependencies for the public and backend
-    var frontend_js_dependencies = ['./bower_components/holderjs/holder.min.js','./bower_components/modernizr/bin/modernizr','./bower_components/jquery/dist/jquery.min.js','./bower_components/angular/angular.min.js','./bower_components/angular-ui-router/release/angular-ui-router.min.js','./bower_components/angularjs-geolocation/dist/angularjs-geolocation.min.js'];
-    var frontend_css_dependencies = ['./bower_components/bootstrap/dist/css/bootstrap.min.css'];
+    var frontend_js_dependencies = [];
+    var frontend_css_dependencies = [];
     var admin_js_dependencies = [];
     var admin_css_dependencies = [];
 
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
     var admin_jade_src = './admin/jade';
 
     //Sass Requires
-    var sass_require = ['bourbon'];
+    var sass_require = ['bourbon','susy'];
 
     var mozjpeg = require('imagemin-mozjpeg');
 
@@ -287,7 +287,7 @@ module.exports = function(grunt) {
                     ext: ".html"
                 },{
                     cwd: "public",
-                    src: "*.jade",
+                    src: "[*.jade,!mixins.jade]",
                     dest: "public",
                     expand: true,
                     ext: ".html"

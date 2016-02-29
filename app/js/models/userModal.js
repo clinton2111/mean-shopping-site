@@ -1,5 +1,5 @@
 (function() {
-  var SALT_WORK_FACTOR, Schema, UserSchema, bcrypt, config, mongoose;
+  var SALT_WORK_FACTOR, Schema, UserSchema, bcrypt, config, mongoose, titleCase;
 
   mongoose = require('mongoose');
 
@@ -28,6 +28,9 @@
     address: {
       type: String
     },
+    temp_password: {
+      type: String
+    },
     phone_number: {
       type: Number,
       required: true
@@ -46,25 +49,27 @@
     var now, user;
     now = new Date();
     this.updated_at = now;
+    this.username = titleCase(this.username);
     if (!this.created_at) {
       this.created_at = now;
     }
     user = this;
     if (!user.isModified('password')) {
-      next();
-    }
-    return bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-      if (err) {
-        next(err);
-      }
-      return bcrypt.hash(user.password, salt, null, function(err, hash) {
+      return next();
+    } else {
+      return bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
         if (err) {
-          return next(err);
+          next(err);
         }
-        user.password = hash;
-        return next();
+        return bcrypt.hash(user.password, salt, null, function(err, hash) {
+          if (err) {
+            return next(err);
+          }
+          user.password = hash;
+          return next();
+        });
       });
-    });
+    }
   });
 
   UserSchema.methods.comparePassword = function(candidatePassword, cb) {
@@ -73,6 +78,12 @@
         return cb(err);
       }
       return cb(null, isMatch);
+    });
+  };
+
+  titleCase = function(str) {
+    return str.replace(/\w\S*/g, function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
   };
 

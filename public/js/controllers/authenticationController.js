@@ -1,29 +1,71 @@
 (function() {
   angular.module('meanShoppingApp.authentication', ['angularValidator']).controller('authenticationController', [
-    '$scope', 'authenticationService', function($scope, authenticationService) {
-      $scope.$on('$viewContentLoaded', function() {});
+    '$scope', '$auth', '$localStorage', 'md5', '$stateParams', function($scope, $auth, $localStorage, md5, $stateParams) {
+      if ($stateParams.type === 'recovery' && !_.isUndefined($stateParams.value) && !_.isUndefined($stateParams.email)) {
+        $scope.recovery_screen = true;
+        $scope.header = 'Reset Password';
+      } else {
+        $scope.recovery_screen = false;
+        $scope.header = 'Login';
+      }
+      $scope.loginError = null;
+      $scope.signUpError = null;
       $scope.signUp = function() {
-        $('#SignUp').modal('hide');
-        return authenticationService.signUp($scope.signup).then(function(data) {
+        var payload;
+        payload = {
+          username: $scope.signup.username,
+          phone_number: $scope.signup.phone_number,
+          email_id: $scope.signup.email_id,
+          password: md5.createHash($scope.signup.password || '')
+        };
+        return $auth.signup(payload, [
+          {
+            skipAuthorization: true
+          }
+        ]).then(function(data) {
           $scope.signup.username = '';
           $scope.signup.phone_number = '';
           $scope.signup.email_id = '';
           $scope.signup.password = '';
           $scope.signup.confirmPassword = '';
-          return console.log(data);
+          payload = {};
+          console.log(data);
+          return $('#SignUp').modal('hide');
         }, function(error) {
+          $scope.signUpError = error.data;
           return console.log(error);
         });
       };
       $scope.logIn = function() {
-        $('#Login').modal('hide');
-        return authenticationService.login($scope.login).then(function(data) {
+        var payload;
+        payload = {
+          email_id: $scope.login.email_id,
+          password: md5.createHash($scope.login.password || '')
+        };
+        return $auth.login(payload, [
+          {
+            skipAuthorization: true
+          }
+        ]).then(function(data) {
+          $localStorage.resetDate = moment().format('DD-MM-YYYY');
           $scope.login.email_id = '';
           $scope.login.password = '';
-          return console.log(data);
+          payload = {};
+          console.log(data);
+          return $('#Login').modal('hide');
         }, function(error) {
-          return console.log(error);
+          $scope.loginError = error.data;
+          return console.log(error.data);
         });
+      };
+      $scope.toggleForgotPass = function() {
+        if ($scope.forgotPassword === false) {
+          $scope.forgotPassword = true;
+          return $scope.header = 'Recover Password';
+        } else {
+          $scope.forgotPassword = false;
+          return $scope.header = 'Login';
+        }
       };
       return $scope.passwordValidator = function(password) {
         if (!password) {

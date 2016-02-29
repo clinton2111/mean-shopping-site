@@ -14,17 +14,18 @@
   module.exports = function(app) {
     var apiRoutes;
     apiRoutes = require('express').Router();
-    app.post('/signUp', function(req, res) {
+    apiRoutes.post('/signUp', function(req, res) {
       var newUser;
       newUser = new User(req.body);
       return newUser.save(function(err) {
         if (err) {
-          res.send(err);
+          return res.status(500).send(err);
+        } else {
+          return res.status(201).send('User created successfully');
         }
-        return res.json(req.body);
       });
     });
-    app.post('/login', function(req, res) {
+    apiRoutes.post('/authenticate', function(req, res) {
       var email_id, password;
       email_id = req.body.email_id;
       password = req.body.password;
@@ -34,21 +35,32 @@
         if (err) {
           res.send(err);
         }
-        return user.comparePassword(password, function(err, isMatch) {
-          var payload, secret, token;
-          if (err) {
-            res.send(err);
-          }
-          payload = {
-            'email_id': email_id,
-            'username': user.username
-          };
-          secret = config.get('Security.Secret');
-          token = jwt.sign(user, secret, {
-            expiresIn: 86400
+        if (!user) {
+          return res.status(401).send('User not found');
+        } else {
+          return user.comparePassword(password, function(err, isMatch) {
+            var json, payload, secret, token;
+            if (err) {
+              res.send(err);
+            }
+            if (isMatch) {
+              payload = {
+                'email_id': email_id,
+                'username': user.username
+              };
+              secret = config.get('Security.Secret');
+              token = jwt.sign(user, secret, {
+                expiresIn: 259200
+              });
+              json = {
+                'token': token
+              };
+              return res.send(json);
+            } else {
+              return res.status(401).send('Incorrect Password');
+            }
           });
-          return res.json(token);
-        });
+        }
       });
     });
     apiRoutes.use(function(req, res, next) {
@@ -57,20 +69,14 @@
       if (token) {
         return jwt.verify(token, config.get('Security.Secret'), function(err, decoded) {
           if (err) {
-            return res.json({
-              success: false,
-              message: 'Failed to authenticate token.'
-            });
+            return res.status(401).send('Failed to authenticate token');
           } else {
             req.decoded = decoded;
             return next();
           }
         });
       } else {
-        return res.json({
-          success: false,
-          message: 'No token provided'
-        });
+        return res.status(400).send('No token provided');
       }
     });
     apiRoutes.get('/', function(req, res) {

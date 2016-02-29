@@ -1,30 +1,60 @@
 angular.module 'meanShoppingApp.authentication',['angularValidator']
-.controller 'authenticationController',['$scope','authenticationService',($scope,authenticationService)->
-	$scope.$on '$viewContentLoaded', ->
+.controller 'authenticationController',['$scope','$auth','$localStorage','md5','$stateParams',($scope,$auth,$localStorage,md5,$stateParams)->
+	# $scope.$on '$viewContentLoaded', ->
+	if $stateParams.type is 'recovery' and !_.isUndefined($stateParams.value) and !_.isUndefined($stateParams.email)
+      $scope.recovery_screen = true
+      $scope.header = 'Reset Password'
+    else
+      $scope.recovery_screen = false
+      $scope.header = 'Login'
 
+	$scope.loginError = null
+	$scope.signUpError = null
 	$scope.signUp=()->
-		$('#SignUp').modal('hide')
-		authenticationService.signUp($scope.signup)
+		payload=
+			username:$scope.signup.username
+			phone_number:$scope.signup.phone_number
+			email_id:$scope.signup.email_id
+			password:md5.createHash $scope.signup.password || ''
+
+		$auth.signup payload,[skipAuthorization: true]
 		.then (data)->
 			$scope.signup.username = ''
 			$scope.signup.phone_number = ''
 			$scope.signup.email_id = ''
 			$scope.signup.password = ''
 			$scope.signup.confirmPassword = ''
+			payload = {}
 			console.log data
+			$('#SignUp').modal('hide')
 		, (error)->
+			$scope.signUpError = error.data
 			console.log error
 
 	$scope.logIn=()->
-		$('#Login').modal('hide')
-		authenticationService.login($scope.login)
+		payload=
+			email_id:$scope.login.email_id
+			password:md5.createHash $scope.login.password || ''
+
+		$auth.login payload,[skipAuthorization: true]
 		.then (data)->
+			$localStorage.resetDate = moment().format('DD-MM-YYYY')
 			$scope.login.email_id = ''
 			$scope.login.password = ''
+			payload = {}
 			console.log data
+			$('#Login').modal('hide')
 		, (error)->
-			console.log error
+			$scope.loginError = error.data
+			console.log error.data
 
+	$scope.toggleForgotPass = ->
+      if($scope.forgotPassword is false)
+        $scope.forgotPassword = true
+        $scope.header = 'Recover Password'
+      else
+        $scope.forgotPassword = false
+        $scope.header = 'Login'
 
 	$scope.passwordValidator = (password) ->
 		if !password

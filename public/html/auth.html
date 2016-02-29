@@ -1,0 +1,104 @@
+
+<div class="container">
+  <div ng-if="recovery_screen == false">
+    <div ng-hide="forgotPassword">
+      <form angular-validator-submit="logIn()" name="loginFormPage" novalidate="novalidate" angular-validator="angular-validator" class="col-xs-12 centerXY">
+        <svg id="Logo" xmlns:x="http://ns.adobe.com/Extensibility/1.0/" xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" version="1.1" x="0" y="0" viewbox="0 0 504.3 97.4" enable-background="new 0 0 504.3 97.4" xml:space="preserve">
+          <g id="G2">
+            <path fill="#1A4E8C" d="M35.2 9.3c-7.5 0-8.5 6.2-9.7 12.7l-9.6 54.1c-0.8 5-2 11.4 5.4 11.4l-1.5 9.3C6.6 94.5-1.8 86.7 0.3 72.2l8.2-46.3C11.6 11.2 21.7 0.9 36.9 0L35.2 9.3z"></path>
+            <path fill="#1A4E8C" d="M57.4 34.6c0.8-4.3 3.1-5.1 4.6-5.1 2 0 4.3 2 3.1 8.4L62 55.6c-0.5 2.4-1.8 9.7-6.4 9.7 -1.9 0-3.4-1.3-2.7-5.1L57.4 34.6zM87.1 17H69.3L68 24.6h-0.2c-1.7-5.6-4.3-9-10.9-9 -12.7 0-16.4 11.1-18.2 21.4l-4.5 25.2c-1.8 10.2 3.3 16.2 11.1 16.2 5.8 0 11.1-2.7 14-8l0.2 0.2 -2.1 12c-0.6 3-2.4 4.7-4.9 4.7 -1.4 0-2.4-0.2-2.8-0.8 -0.6-0.7-0.7-1.9-0.5-3.6H31.4c-0.7 11.6 9 14.4 19.3 14.4 15.1 0 23.1-4.7 25.8-20.2L87.1 17z"></path>
+            <path fill="#1A4E8C" d="M113.4 69.2c-0.6 3.3-2.4 5.9-5.3 5.9 -2.5 0-3.8-1.5-3.1-5.4l1.5-9c0.5-2.7 1.9-4.5 4.3-6l5.8-3.8L113.4 69.2zM136.9 36.9c2.6-14.7-2-21.3-18.5-21.3 -12.7 0-22.6 6.6-24.4 16.7l-1.2 6.2h17l1.1-5.6c0.5-2.8 2.2-4.7 5.4-4.7 3.4 0 3.9 2.1 3.2 5.7 -1.3 7.3-8 9-15.4 11.8 -7.3 3-15.1 7.2-17.4 20 -1.9 11-2.1 20.8 11.2 20.8 5.1 0 10.6-2.5 14.2-6.6h0.2l-0.9 5.2h16.8L136.9 36.9z"></path>
+            <path fill="#1A4E8C" d="M149.4 17h17.7l-1.4 8.4h0.1c4.5-6.2 8.5-9.8 16-9.8 5.9 0 10.8 2.7 11 9.8 4.6-6.2 7.8-9.8 16.2-9.8 8.9 0 12.4 6.2 11 14.7l-9.7 54.8H192l8-45.7c0.5-2.5 1.3-7.3-3.2-7.3 -4.5 0-5.4 5.7-5.8 7.3l-8 45.7h-18.2l8-45.7c0.5-2.5 1.3-7.3-3.2-7.3 -4.5 0-5.4 5.7-5.8 7.3l-8 45.7h-18.3L149.4 17z"></path>
+            <path fill="#1A4E8C" d="M246.9 33.7c0.4-2.4 0.9-5.6 5.1-5.6 4.1 0 3.5 3.2 3.2 5.6l-1.4 7.5h-8.3L246.9 33.7zM222.7 67.1c-1.4 7.9 0.7 19.4 19 19.4s24.5-11.5 25.9-19.4l1.3-7.2h-18.3l-1.5 8.5c-0.5 2.4-0.9 5.6-5.1 5.6 -4.1 0-3.7-3.2-3.2-5.6l2.6-14.7H270l3.3-18.7c1.3-7.9-0.8-19.4-19.2-19.4 -18.3 0-24.5 11.5-25.8 19.4L222.7 67.1z"></path>
+            <path fill="#1A4E8C" d="M272.2 87.4c7.3 0 8.5-6.4 9.3-11.4l9.6-54.1c1.2-6.5 2.2-12.7-5.1-12.7l1.7-9.3c14.6 0.9 21.2 11.2 19.2 25.9l-8.2 46.3c-3 14.6-14.2 22.4-28 24.6L272.2 87.4z"></path>
+          </g>
+          <g id="G1">
+            <path fill="#EF4124" d="M324.8 0H343l-15 85.1h-18.2L324.8 0z"></path>
+            <path fill="#EF4124" d="M367.8 69.2c-0.6 3.3-2.4 5.9-5.3 5.9 -2.5 0-3.8-1.5-3.1-5.4l1.5-9c0.5-2.7 1.9-4.5 4.3-6l5.8-3.8L367.8 69.2zM391.3 36.9c2.6-14.7-2-21.3-18.5-21.3 -12.7 0-22.6 6.6-24.4 16.7l-1.2 6.2h17l1.1-5.6c0.5-2.8 2.2-4.7 5.4-4.7 3.4 0 3.9 2.1 3.2 5.7 -1.3 7.3-8 9-15.4 11.8 -7.3 3-15.1 7.2-17.4 20 -1.9 11-2.1 20.8 11.2 20.8 5.1 0 10.6-2.5 14.2-6.6h0.2l-0.9 5.2h16.8L391.3 36.9z"></path>
+            <path fill="#EF4124" d="M403 17h17.6l-1.3 7.6h0.2c4.4-5.8 8.5-9 15.5-9 8.8 0 12.1 6.4 10.6 14.7L436 85.1h-18.3l8.2-46.5c0.5-2.5 1.2-6.5-3-6.5 -4.1 0-5 4.9-5.3 6.5l-8.2 46.5H391L403 17z"></path>
+            <path fill="#EF4124" d="M475 61.5c-0.8 4.7-1.9 11.1-6.6 11.1 -1.8 0-3.4-0.9-2.8-4.5l6.2-34.6c0.5-2.7 2.6-4.1 4.3-4.1 3.9 0 3.9 4.5 3.2 8.6L475 61.5zM504.3 0h-18.3l-4.1 23.2h-0.2c-1.8-5.2-5.2-7.6-11.7-7.6 -9 0-14.4 6.4-16.3 17.3l-5.9 33.3c-2.3 12.8 1.4 20.4 10.1 20.4 6 0 11-3 14.2-8.3h0.2l-1.2 6.9h18.3L504.3 0z"></path>
+          </g>
+        </svg>
+        <h1>{{header}}</h1>
+        <h4>Please enter your login details</h4>
+        <div ng-if="loginError" class="alert alert-danger"><strong>Oh snap!  </strong>{{loginError}}</div>
+        <div class="form-group">
+          <label control-label="control-label" for="loginemail_id">Email ID</label>
+          <input type="email" name="loginemail_id" validate-on="dirty" ng-model="login.email_id" invalid-message="'Enter a valid Email ID'" required-message="'Email ID is required'" required="required" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <label control-label="control-label" for="loginpassword">Password</label>
+          <input type="password" name="loginpassword" validate-on="dirty" ng-model="login.password" required-message="'Password is required'" required="required" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <button type="submit" ng-disabled="loginFormPage.$invalid" class="btn btn-primary btn-lg btn-block">Login</button>
+        </div>
+        <div class="form-group"><a ng-click="toggleForgotPass()" class="text-right">Recover Password</a></div>
+      </form>
+    </div>
+    <div ng-show="forgotPassword">
+      <form angular-validator-submit="recoverPassword()" name="recoveryFormPage" novalidate="novalidate" angular-validator="angular-validator" class="col-xs-12 centerXY">
+        <svg id="Logo" xmlns:x="http://ns.adobe.com/Extensibility/1.0/" xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" version="1.1" x="0" y="0" viewbox="0 0 504.3 97.4" enable-background="new 0 0 504.3 97.4" xml:space="preserve">
+          <g id="G2">
+            <path fill="#1A4E8C" d="M35.2 9.3c-7.5 0-8.5 6.2-9.7 12.7l-9.6 54.1c-0.8 5-2 11.4 5.4 11.4l-1.5 9.3C6.6 94.5-1.8 86.7 0.3 72.2l8.2-46.3C11.6 11.2 21.7 0.9 36.9 0L35.2 9.3z"></path>
+            <path fill="#1A4E8C" d="M57.4 34.6c0.8-4.3 3.1-5.1 4.6-5.1 2 0 4.3 2 3.1 8.4L62 55.6c-0.5 2.4-1.8 9.7-6.4 9.7 -1.9 0-3.4-1.3-2.7-5.1L57.4 34.6zM87.1 17H69.3L68 24.6h-0.2c-1.7-5.6-4.3-9-10.9-9 -12.7 0-16.4 11.1-18.2 21.4l-4.5 25.2c-1.8 10.2 3.3 16.2 11.1 16.2 5.8 0 11.1-2.7 14-8l0.2 0.2 -2.1 12c-0.6 3-2.4 4.7-4.9 4.7 -1.4 0-2.4-0.2-2.8-0.8 -0.6-0.7-0.7-1.9-0.5-3.6H31.4c-0.7 11.6 9 14.4 19.3 14.4 15.1 0 23.1-4.7 25.8-20.2L87.1 17z"></path>
+            <path fill="#1A4E8C" d="M113.4 69.2c-0.6 3.3-2.4 5.9-5.3 5.9 -2.5 0-3.8-1.5-3.1-5.4l1.5-9c0.5-2.7 1.9-4.5 4.3-6l5.8-3.8L113.4 69.2zM136.9 36.9c2.6-14.7-2-21.3-18.5-21.3 -12.7 0-22.6 6.6-24.4 16.7l-1.2 6.2h17l1.1-5.6c0.5-2.8 2.2-4.7 5.4-4.7 3.4 0 3.9 2.1 3.2 5.7 -1.3 7.3-8 9-15.4 11.8 -7.3 3-15.1 7.2-17.4 20 -1.9 11-2.1 20.8 11.2 20.8 5.1 0 10.6-2.5 14.2-6.6h0.2l-0.9 5.2h16.8L136.9 36.9z"></path>
+            <path fill="#1A4E8C" d="M149.4 17h17.7l-1.4 8.4h0.1c4.5-6.2 8.5-9.8 16-9.8 5.9 0 10.8 2.7 11 9.8 4.6-6.2 7.8-9.8 16.2-9.8 8.9 0 12.4 6.2 11 14.7l-9.7 54.8H192l8-45.7c0.5-2.5 1.3-7.3-3.2-7.3 -4.5 0-5.4 5.7-5.8 7.3l-8 45.7h-18.2l8-45.7c0.5-2.5 1.3-7.3-3.2-7.3 -4.5 0-5.4 5.7-5.8 7.3l-8 45.7h-18.3L149.4 17z"></path>
+            <path fill="#1A4E8C" d="M246.9 33.7c0.4-2.4 0.9-5.6 5.1-5.6 4.1 0 3.5 3.2 3.2 5.6l-1.4 7.5h-8.3L246.9 33.7zM222.7 67.1c-1.4 7.9 0.7 19.4 19 19.4s24.5-11.5 25.9-19.4l1.3-7.2h-18.3l-1.5 8.5c-0.5 2.4-0.9 5.6-5.1 5.6 -4.1 0-3.7-3.2-3.2-5.6l2.6-14.7H270l3.3-18.7c1.3-7.9-0.8-19.4-19.2-19.4 -18.3 0-24.5 11.5-25.8 19.4L222.7 67.1z"></path>
+            <path fill="#1A4E8C" d="M272.2 87.4c7.3 0 8.5-6.4 9.3-11.4l9.6-54.1c1.2-6.5 2.2-12.7-5.1-12.7l1.7-9.3c14.6 0.9 21.2 11.2 19.2 25.9l-8.2 46.3c-3 14.6-14.2 22.4-28 24.6L272.2 87.4z"></path>
+          </g>
+          <g id="G1">
+            <path fill="#EF4124" d="M324.8 0H343l-15 85.1h-18.2L324.8 0z"></path>
+            <path fill="#EF4124" d="M367.8 69.2c-0.6 3.3-2.4 5.9-5.3 5.9 -2.5 0-3.8-1.5-3.1-5.4l1.5-9c0.5-2.7 1.9-4.5 4.3-6l5.8-3.8L367.8 69.2zM391.3 36.9c2.6-14.7-2-21.3-18.5-21.3 -12.7 0-22.6 6.6-24.4 16.7l-1.2 6.2h17l1.1-5.6c0.5-2.8 2.2-4.7 5.4-4.7 3.4 0 3.9 2.1 3.2 5.7 -1.3 7.3-8 9-15.4 11.8 -7.3 3-15.1 7.2-17.4 20 -1.9 11-2.1 20.8 11.2 20.8 5.1 0 10.6-2.5 14.2-6.6h0.2l-0.9 5.2h16.8L391.3 36.9z"></path>
+            <path fill="#EF4124" d="M403 17h17.6l-1.3 7.6h0.2c4.4-5.8 8.5-9 15.5-9 8.8 0 12.1 6.4 10.6 14.7L436 85.1h-18.3l8.2-46.5c0.5-2.5 1.2-6.5-3-6.5 -4.1 0-5 4.9-5.3 6.5l-8.2 46.5H391L403 17z"></path>
+            <path fill="#EF4124" d="M475 61.5c-0.8 4.7-1.9 11.1-6.6 11.1 -1.8 0-3.4-0.9-2.8-4.5l6.2-34.6c0.5-2.7 2.6-4.1 4.3-4.1 3.9 0 3.9 4.5 3.2 8.6L475 61.5zM504.3 0h-18.3l-4.1 23.2h-0.2c-1.8-5.2-5.2-7.6-11.7-7.6 -9 0-14.4 6.4-16.3 17.3l-5.9 33.3c-2.3 12.8 1.4 20.4 10.1 20.4 6 0 11-3 14.2-8.3h0.2l-1.2 6.9h18.3L504.3 0z"></path>
+          </g>
+        </svg>
+        <h1>{{header}}</h1>
+        <h4>Please enter your Email ID</h4>
+        <div ng-if="loginError" class="alert alert-danger"><strong>Oh snap!  </strong>{{loginError}}</div>
+        <div class="form-group">
+          <label control-label="control-label" for="recoveremail_id">Email ID</label>
+          <input type="email" name="recoveremail_id" validate-on="dirty" ng-model="recover.email_id" invalid-message="'Enter a valid Email ID'" required-message="'Email ID is required'" required="required" class="form-control"/>
+        </div>
+        <div class="form-group">
+          <button type="submit" ng-disabled="recoveryFormPage.$invalid" class="btn btn-primary btn-lg btn-block">Recover Password</button>
+        </div>
+        <div class="form-group"><a ng-click="toggleForgotPass()" class="text-right">Go Back</a></div>
+      </form>
+    </div>
+  </div>
+  <div ng-if="recovery_screen==true">
+    <form angular-validator-submit="updatePassword()" name="updatePasswordPage" novalidate="novalidate" angular-validator="angular-validator" class="col-xs-12 centerXY">
+      <svg id="Logo" xmlns:x="http://ns.adobe.com/Extensibility/1.0/" xmlns:i="http://ns.adobe.com/AdobeIllustrator/10.0/" xmlns:graph="http://ns.adobe.com/Graphs/1.0/" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:a="http://ns.adobe.com/AdobeSVGViewerExtensions/3.0/" version="1.1" x="0" y="0" viewbox="0 0 504.3 97.4" enable-background="new 0 0 504.3 97.4" xml:space="preserve">
+        <g id="G2">
+          <path fill="#1A4E8C" d="M35.2 9.3c-7.5 0-8.5 6.2-9.7 12.7l-9.6 54.1c-0.8 5-2 11.4 5.4 11.4l-1.5 9.3C6.6 94.5-1.8 86.7 0.3 72.2l8.2-46.3C11.6 11.2 21.7 0.9 36.9 0L35.2 9.3z"></path>
+          <path fill="#1A4E8C" d="M57.4 34.6c0.8-4.3 3.1-5.1 4.6-5.1 2 0 4.3 2 3.1 8.4L62 55.6c-0.5 2.4-1.8 9.7-6.4 9.7 -1.9 0-3.4-1.3-2.7-5.1L57.4 34.6zM87.1 17H69.3L68 24.6h-0.2c-1.7-5.6-4.3-9-10.9-9 -12.7 0-16.4 11.1-18.2 21.4l-4.5 25.2c-1.8 10.2 3.3 16.2 11.1 16.2 5.8 0 11.1-2.7 14-8l0.2 0.2 -2.1 12c-0.6 3-2.4 4.7-4.9 4.7 -1.4 0-2.4-0.2-2.8-0.8 -0.6-0.7-0.7-1.9-0.5-3.6H31.4c-0.7 11.6 9 14.4 19.3 14.4 15.1 0 23.1-4.7 25.8-20.2L87.1 17z"></path>
+          <path fill="#1A4E8C" d="M113.4 69.2c-0.6 3.3-2.4 5.9-5.3 5.9 -2.5 0-3.8-1.5-3.1-5.4l1.5-9c0.5-2.7 1.9-4.5 4.3-6l5.8-3.8L113.4 69.2zM136.9 36.9c2.6-14.7-2-21.3-18.5-21.3 -12.7 0-22.6 6.6-24.4 16.7l-1.2 6.2h17l1.1-5.6c0.5-2.8 2.2-4.7 5.4-4.7 3.4 0 3.9 2.1 3.2 5.7 -1.3 7.3-8 9-15.4 11.8 -7.3 3-15.1 7.2-17.4 20 -1.9 11-2.1 20.8 11.2 20.8 5.1 0 10.6-2.5 14.2-6.6h0.2l-0.9 5.2h16.8L136.9 36.9z"></path>
+          <path fill="#1A4E8C" d="M149.4 17h17.7l-1.4 8.4h0.1c4.5-6.2 8.5-9.8 16-9.8 5.9 0 10.8 2.7 11 9.8 4.6-6.2 7.8-9.8 16.2-9.8 8.9 0 12.4 6.2 11 14.7l-9.7 54.8H192l8-45.7c0.5-2.5 1.3-7.3-3.2-7.3 -4.5 0-5.4 5.7-5.8 7.3l-8 45.7h-18.2l8-45.7c0.5-2.5 1.3-7.3-3.2-7.3 -4.5 0-5.4 5.7-5.8 7.3l-8 45.7h-18.3L149.4 17z"></path>
+          <path fill="#1A4E8C" d="M246.9 33.7c0.4-2.4 0.9-5.6 5.1-5.6 4.1 0 3.5 3.2 3.2 5.6l-1.4 7.5h-8.3L246.9 33.7zM222.7 67.1c-1.4 7.9 0.7 19.4 19 19.4s24.5-11.5 25.9-19.4l1.3-7.2h-18.3l-1.5 8.5c-0.5 2.4-0.9 5.6-5.1 5.6 -4.1 0-3.7-3.2-3.2-5.6l2.6-14.7H270l3.3-18.7c1.3-7.9-0.8-19.4-19.2-19.4 -18.3 0-24.5 11.5-25.8 19.4L222.7 67.1z"></path>
+          <path fill="#1A4E8C" d="M272.2 87.4c7.3 0 8.5-6.4 9.3-11.4l9.6-54.1c1.2-6.5 2.2-12.7-5.1-12.7l1.7-9.3c14.6 0.9 21.2 11.2 19.2 25.9l-8.2 46.3c-3 14.6-14.2 22.4-28 24.6L272.2 87.4z"></path>
+        </g>
+        <g id="G1">
+          <path fill="#EF4124" d="M324.8 0H343l-15 85.1h-18.2L324.8 0z"></path>
+          <path fill="#EF4124" d="M367.8 69.2c-0.6 3.3-2.4 5.9-5.3 5.9 -2.5 0-3.8-1.5-3.1-5.4l1.5-9c0.5-2.7 1.9-4.5 4.3-6l5.8-3.8L367.8 69.2zM391.3 36.9c2.6-14.7-2-21.3-18.5-21.3 -12.7 0-22.6 6.6-24.4 16.7l-1.2 6.2h17l1.1-5.6c0.5-2.8 2.2-4.7 5.4-4.7 3.4 0 3.9 2.1 3.2 5.7 -1.3 7.3-8 9-15.4 11.8 -7.3 3-15.1 7.2-17.4 20 -1.9 11-2.1 20.8 11.2 20.8 5.1 0 10.6-2.5 14.2-6.6h0.2l-0.9 5.2h16.8L391.3 36.9z"></path>
+          <path fill="#EF4124" d="M403 17h17.6l-1.3 7.6h0.2c4.4-5.8 8.5-9 15.5-9 8.8 0 12.1 6.4 10.6 14.7L436 85.1h-18.3l8.2-46.5c0.5-2.5 1.2-6.5-3-6.5 -4.1 0-5 4.9-5.3 6.5l-8.2 46.5H391L403 17z"></path>
+          <path fill="#EF4124" d="M475 61.5c-0.8 4.7-1.9 11.1-6.6 11.1 -1.8 0-3.4-0.9-2.8-4.5l6.2-34.6c0.5-2.7 2.6-4.1 4.3-4.1 3.9 0 3.9 4.5 3.2 8.6L475 61.5zM504.3 0h-18.3l-4.1 23.2h-0.2c-1.8-5.2-5.2-7.6-11.7-7.6 -9 0-14.4 6.4-16.3 17.3l-5.9 33.3c-2.3 12.8 1.4 20.4 10.1 20.4 6 0 11-3 14.2-8.3h0.2l-1.2 6.9h18.3L504.3 0z"></path>
+        </g>
+      </svg>
+      <h1>{{header}}</h1>
+      <h4>Please enter your recovery details</h4>
+      <div class="form-group">
+        <label control-label="control-label" for="updatepassword">New Password</label>
+        <input type="password" name="updatepassword" validate-on="dirty" ng-model="updatePass.password" validator="passwordValidator(updatePass.password) === true" invalid-message="passwordValidator(updatePass.password)" required="required" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label control-label="control-label" for="updateconfirmPassword">Confirm Password</label>
+        <input type="password" name="updateconfirmPassword" validate-on="dirty" ng-model="updatePass.confirmPassword" validator="updatePass.password === updatePass.confirmPassword" invalid-message="'Passwords do not match!'" required="required" class="form-control"/>
+      </div>
+      <div class="form-group">
+        <button type="submit" ng-disabled="updatePasswordPage.$invalid" class="btn btn-primary btn-lg btn-block">Update Password</button>
+      </div>
+    </form>
+  </div>
+</div>

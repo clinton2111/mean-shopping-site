@@ -1,0 +1,53 @@
+include ../mixins
+.container
+	div(ng-if='recovery_screen == false')
+		div(ng-hide='forgotPassword')
+			form.col-xs-12.centerXY(angular-validator-submit="logIn()" name="loginFormPage" novalidate angular-validator)
+				+logoSVG()
+				h1 {{header}}
+				h4 Please enter your login details
+				.alert.alert-danger(ng-if='loginError')
+					strong Oh snap! #{' '}
+					{{loginError}}
+				.form-group
+					label( control-label for='loginemail_id') Email ID
+					input.form-control(type='email', name='loginemail_id', validate-on='dirty', ng-model='login.email_id',invalid-message="'Enter a valid Email ID'", required-message="'Email ID is required'", required)
+				.form-group
+					label( control-label for='loginpassword') Password
+					input.form-control(type='password', name='loginpassword', validate-on='dirty', ng-model='login.password', required-message="'Password is required'", required)
+				.form-group
+					button(type='submit',ng-disabled='loginFormPage.$invalid' class="btn btn-primary btn-lg btn-block") Login
+				.form-group
+					a.text-right(ng-click='toggleForgotPass()') Recover Password
+
+		div(ng-show='forgotPassword')
+			form.col-xs-12.centerXY(angular-validator-submit="recoverPassword()" name="recoveryFormPage" novalidate angular-validator)
+				+logoSVG()
+				h1 {{header}}
+				h4 Please enter your Email ID
+				.alert.alert-danger(ng-if='loginError')
+					strong Oh snap! #{' '}
+					{{loginError}}
+				.form-group
+					label( control-label for='recoveremail_id') Email ID
+					input.form-control(type='email', name='recoveremail_id', validate-on='dirty', ng-model='recover.email_id',invalid-message="'Enter a valid Email ID'", required-message="'Email ID is required'", required)
+				.form-group
+					button(type='submit',ng-disabled='recoveryFormPage.$invalid' class="btn btn-primary btn-lg btn-block") Recover Password
+				.form-group
+					a.text-right(ng-click='toggleForgotPass()') Go Back
+
+	div(ng-if='recovery_screen==true')
+		form.col-xs-12.centerXY(angular-validator-submit="updatePassword()" name="updatePasswordPage" novalidate angular-validator)
+			+logoSVG()
+			h1 {{header}}
+			h4 Please enter your recovery details
+			.form-group
+				label( control-label for='updatepassword') New Password
+				input.form-control(type='password', name='updatepassword', validate-on='dirty', ng-model='updatePass.password', validator = "passwordValidator(updatePass.password) === true",invalid-message = "passwordValidator(updatePass.password)", required)
+			.form-group
+				label( control-label for='updateconfirmPassword') Confirm Password
+				input.form-control(type='password', name='updateconfirmPassword', validate-on='dirty', ng-model='updatePass.confirmPassword',validator = "updatePass.password === updatePass.confirmPassword",invalid-message = "'Passwords do not match!'", required)
+			.form-group
+					button(type='submit',ng-disabled='updatePasswordPage.$invalid' class="btn btn-primary btn-lg btn-block") Update Password
+
+

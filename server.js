@@ -17,6 +17,7 @@ mongoose.connect(config.get('Database'));
 
 // Logging and Parsing
 app.use(express.static(__dirname + '/public'));                 // sets the static files location to public
+app.use('/admin',express.static(__dirname + '/admin'));         // sets the static files location to admin while accessing the admin files
 app.use('/bower_components',  express.static(__dirname + '/bower_components')); // Use BowerComponents
 app.use(morgan('dev'));                                         // log with Morgan
 app.use(bodyParser.json());                                     // parse application/json
@@ -24,11 +25,21 @@ app.use(bodyParser.urlencoded({extended: true}));               // parse applica
 app.use(bodyParser.text());                                     // allows bodyParser to look at raw text
 app.use(bodyParser.json({ type: 'application/vnd.api+json'}));  // parse application/vnd.api+json as json
 app.use(methodOverride());
-app.set('routerInstance',express.Router())
+
+// HTML5MODE settings
+// ------------------------------------------------------
+// app.use('/js', express.static(__dirname + '/public/js'));
+// app.use('/css', express.static(__dirname + '/public/css'));
+// app.use('/html', express.static(__dirname + '/public/html'));
 
 // Routes
 // ------------------------------------------------------
 require('./app/js/routes/routes.js')(app);
+
+// app.all('/*', function(req, res, next) {
+//     // Just send the index.html for other files to support HTML5Mode
+//     res.sendFile('/public/index.html', { root: __dirname });
+// });
 
 // Listen
 // -------------------------------------------------------

@@ -1,0 +1,56 @@
+.navbar {
+    .navbar-brand {
+        max-width: 200px;
+        margin-top: -5px;
+        #Logo {
+            width: 100%;
+            // #G1 path {
+            //     fill: #26568F;
+            // }
+            // #G2 path{
+            // 	fill:
+            // }
+
+            &:hover{
+            	#G1 path{
+            		fill:#1A4E8C
+            	}
+            	#G2 path{
+            		fill:#EF4124
+            	}
+            }
+        }
+    }
+    #search {
+        text-align: center;
+        .form-control {
+            width: 500px
+        }
+    }
+}
+
+@media (max-width: 933px) {
+    .navbar {
+        #search {
+            text-align: center;
+            .form-control {
+                width: 500px
+            }
+        }
+    }
+}
+
+@media (max-width: 790px) {
+    .navbar {
+        #search {
+            text-align: center;
+            .form-control {
+                width: 100%
+            }
+        }
+    }
+}
+
+// #EF4124
+
+// #1A4E8C Blue
