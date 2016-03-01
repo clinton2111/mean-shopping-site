@@ -287,7 +287,7 @@ module.exports = function(grunt) {
                     ext: ".html"
                 },{
                     cwd: "public",
-                    src: "[*.jade,!mixins.jade]",
+                    src: ['*.jade','!mixins.jade'],
                     dest: "public",
                     expand: true,
                     ext: ".html"
@@ -307,7 +307,7 @@ module.exports = function(grunt) {
                     ext: ".html"
                 },{
                     cwd: "admin",
-                    src: "*.jade",
+                    src: ['*.jade','!mixins.jade'],
                     dest: "admin",
                     expand: true,
                     ext: ".html"

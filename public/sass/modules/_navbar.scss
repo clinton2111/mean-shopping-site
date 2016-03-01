@@ -1,22 +1,16 @@
 .navbar {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
     .navbar-brand {
         max-width: 200px;
         margin-top: -5px;
         #Logo {
             width: 100%;
-            // #G1 path {
-            //     fill: #26568F;
-            // }
-            // #G2 path{
-            // 	fill:
-            // }
-
             &:hover{
             	#G1 path{
-            		fill:#1A4E8C
+            		fill:rgba(#FFBE00, 1);
             	}
             	#G2 path{
-            		fill:#EF4124
+            		fill:rgba(#263248, 1);
             	}
             }
         }
@@ -32,9 +26,8 @@
 @media (max-width: 933px) {
     .navbar {
         #search {
-            text-align: center;
             .form-control {
-                width: 500px
+                width: 300px
             }
         }
     }
@@ -43,14 +36,9 @@
 @media (max-width: 790px) {
     .navbar {
         #search {
-            text-align: center;
             .form-control {
                 width: 100%
             }
         }
     }
 }
-
-// #EF4124
-
-// #1A4E8C Blue

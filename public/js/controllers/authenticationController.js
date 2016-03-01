@@ -10,6 +10,7 @@
       }
       $scope.loginError = null;
       $scope.signUpError = null;
+      $scope.username = null;
       $scope.signUp = function() {
         var payload;
         payload = {
@@ -29,11 +30,9 @@
           $scope.signup.password = '';
           $scope.signup.confirmPassword = '';
           payload = {};
-          console.log(data);
           return $('#SignUp').modal('hide');
         }, function(error) {
-          $scope.signUpError = error.data;
-          return console.log(error);
+          return $scope.signUpError = error.data;
         });
       };
       $scope.logIn = function() {
@@ -51,11 +50,10 @@
           $scope.login.email_id = '';
           $scope.login.password = '';
           payload = {};
-          console.log(data);
+          $scope.isAuthenticated();
           return $('#Login').modal('hide');
         }, function(error) {
-          $scope.loginError = error.data;
-          return console.log(error.data);
+          return $scope.loginError = error.data;
         });
       };
       $scope.toggleForgotPass = function() {
@@ -67,7 +65,18 @@
           return $scope.header = 'Login';
         }
       };
-      return $scope.passwordValidator = function(password) {
+      $scope.isAuthenticated = function() {
+        var authFlag, payload;
+        authFlag = $auth.isAuthenticated();
+        if (!authFlag) {
+          return authFlag;
+        } else {
+          payload = $auth.getPayload();
+          $scope.username = payload.username;
+          return authFlag;
+        }
+      };
+      $scope.passwordValidator = function(password) {
         if (!password) {
           return;
         }
@@ -82,6 +91,13 @@
         }
         return true;
       };
+      $scope.logout = function() {
+        $auth.logout();
+        return $scope.username = null;
+      };
+      return $scope.$watch(['username'], function() {
+        return $scope.$apply;
+      }, true);
     }
   ]);
 

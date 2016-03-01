@@ -2,14 +2,15 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 .controller 'authenticationController',['$scope','$auth','$localStorage','md5','$stateParams',($scope,$auth,$localStorage,md5,$stateParams)->
 	# $scope.$on '$viewContentLoaded', ->
 	if $stateParams.type is 'recovery' and !_.isUndefined($stateParams.value) and !_.isUndefined($stateParams.email)
-      $scope.recovery_screen = true
-      $scope.header = 'Reset Password'
-    else
-      $scope.recovery_screen = false
-      $scope.header = 'Login'
+		$scope.recovery_screen = true
+		$scope.header = 'Reset Password'
+	else
+		$scope.recovery_screen = false
+		$scope.header = 'Login'
 
 	$scope.loginError = null
 	$scope.signUpError = null
+	$scope.username = null
 	$scope.signUp=()->
 		payload=
 			username:$scope.signup.username
@@ -25,11 +26,9 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 			$scope.signup.password = ''
 			$scope.signup.confirmPassword = ''
 			payload = {}
-			console.log data
 			$('#SignUp').modal('hide')
 		, (error)->
 			$scope.signUpError = error.data
-			console.log error
 
 	$scope.logIn=()->
 		payload=
@@ -42,19 +41,26 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 			$scope.login.email_id = ''
 			$scope.login.password = ''
 			payload = {}
-			console.log data
+			$scope.isAuthenticated()
 			$('#Login').modal('hide')
 		, (error)->
 			$scope.loginError = error.data
-			console.log error.data
 
 	$scope.toggleForgotPass = ->
-      if($scope.forgotPassword is false)
-        $scope.forgotPassword = true
-        $scope.header = 'Recover Password'
-      else
-        $scope.forgotPassword = false
-        $scope.header = 'Login'
+		if($scope.forgotPassword is false)
+			$scope.forgotPassword = true
+			$scope.header = 'Recover Password'
+		else
+			$scope.forgotPassword = false
+			$scope.header = 'Login'
+
+	$scope.isAuthenticated =->
+		authFlag = $auth.isAuthenticated();
+		if !authFlag then return authFlag
+		else
+			payload = $auth.getPayload();
+			$scope.username = payload.username
+			return authFlag
 
 	$scope.passwordValidator = (password) ->
 		if !password
@@ -66,4 +72,12 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 		if !password.match(/[0-9]/)
 			return 'Password must have at least one number'
 		true	
+
+	$scope.logout=->
+		$auth.logout();
+		$scope.username = null
+
+	$scope.$watch ['username'], ()->
+		$scope.$apply
+	,true
 ]

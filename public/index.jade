@@ -21,104 +21,121 @@ html(ng-app="meanShoppingApp")
 		//- base(href="/")
 
 	body
-		nav.navbar.navbar-default
-			.container-fluid
+		header
+			nav.navbar.navbar-default.navbar-fixed-top
+				.container-fluid
+					.navbar-header
+						button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#mobile-navbar-collapse', aria-expanded='false')
+							span.sr-only Toggle navigation
+							span.icon-bar
+							span.icon-bar
+							span.icon-bar
+						a.navbar-brand(href='#')
+							+logoSVG()
 
-				.navbar-header
-					button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#mobile-navbar-collapse', aria-expanded='false')
-						span.sr-only Toggle navigation
-						span.icon-bar
-						span.icon-bar
-						span.icon-bar
-					a.navbar-brand(href='#')
-						+logoSVG()
 
+					//- Collect the nav links, forms, and other content for toggling
+					#mobile-navbar-collapse.collapse.navbar-collapse
+						//- ul.nav.navbar-nav
+						//- 	li.active
+						//- 		a(href='#') Link
+						//- 	li
+						//- 		a(href='#') Link
+						
+						span(ng-controller='authenticationController')
+							ul.nav.navbar-nav.navbar-right(ng-hide="isAuthenticated()")
+								li
+									a(data-toggle="modal" data-target="#Login") Log In
+								li
+									a(data-toggle="modal" data-target="#SignUp") Sign Up
 
-				//- Collect the nav links, forms, and other content for toggling
-				#mobile-navbar-collapse.collapse.navbar-collapse
-					//- ul.nav.navbar-nav
-					//- 	li.active
-					//- 		a(href='#') Link
-					//- 	li
-					//- 		a(href='#') Link
-					
-					ul.nav.navbar-nav.navbar-right(ng-controller='authenticationController')
-						li
-							a(data-toggle="modal" data-target="#Login") Log In
-						li
-							a(data-toggle="modal" data-target="#SignUp") Sign Up
+							ul.nav.navbar-nav.navbar-right(ng-show="isAuthenticated()")
+								li.dropdown
+									a.dropdown-toggle(data-toggle="dropdown") Hi {{username}} #{' '}
+										span.caret
+									ul.dropdown-menu
+										li
+											a() Orders
+										li
+											a() Accout Settings
+										li.divider
+										li
+											a(ng-click='logout()') Log Out
 
-						.modal.fade#SignUp( tabindex="-1")
-							.modal-dialog
-								.modal-content
-									form(angular-validator-submit="signUp()" name="signUpForm" novalidate angular-validator)
-										.modal-header
-											button(type="button" class="close" data-dismiss="modal")
-												span &times;
-											h4 Sign Up For Free
-											.alert.alert-danger(ng-if='signUpError')
-														strong Oh snap! #{' '}
-														{{signUpError}}
-										.modal-body
-											
-												h4 Please enter your following details
-												.form-group
-													label( control-label for='username') Name
-													input.form-control(type='text', name='username', validate-on='dirty', ng-model='signup.username', ng-pattern='/^[A-z ]+$/', invalid-message="'Enter a valid Name'", required-message="'Name is required'", required)
-												.form-group
-													label( control-label for='phone_number') Phone Number
-													input.form-control(type='text', name='phone_number', validate-on='dirty', ng-model='signup.phone_number', ng-pattern='/^[0-9]+$/', invalid-message="'Enter a valid phone number'", required-message="'Phone number is required'", required)
-												.form-group
-													label( control-label for='email_id') Email ID
-													input.form-control(type='email', name='email_id', validate-on='dirty', ng-model='signup.email_id', invalid-message="'Enter a valid Email ID'", required-message="'Email ID is required'", required)
-												.form-group
-													label( control-label for='password') Password
-													input.form-control(type='password', name='password', validate-on='dirty', ng-model='signup.password', validator = "passwordValidator(signup.password) === true",invalid-message = "passwordValidator(signup.password)", required)
-												.form-group
-													label( control-label for='confirmPassword') Confirm Password
-													input.form-control(type='password', name='confirmPassword', validate-on='dirty', ng-model='signup.confirmPassword',validator = "signup.password === signup.confirmPassword",
-							                    invalid-message = "'Passwords do not match!'", required)
+						form.navbar-form#search(role='search')
+							.form-group
+								input.form-control(type='text', placeholder='Search')
+							//- button.btn.btn-default(type='submit')
+							//- 	span(class="glyphicon glyphicon-search")
+									
+
+		span(ng-controller='authenticationController')
+			.modal.fade#SignUp( tabindex="-1")
+								.modal-dialog
+									.modal-content
+										form(angular-validator-submit="signUp()" name="signUpForm" novalidate angular-validator)
+											.modal-header
+												button(type="button" class="close" data-dismiss="modal")
+													span &times;
+												h4 Sign Up For Free
+												.alert.alert-danger(ng-if='signUpError')
+															strong Oh snap! #{' '}
+															{{signUpError}}
+											.modal-body
 												
-										.modal-footer
-											.form-group
-												button(type="button" class="btn btn-default" data-dismiss="modal") Close
-												button(type='submit',ng-disabled='signUpForm.$invalid' class="btn btn-primary") Sign Up
-
-						.modal.fade#Login( tabindex="-1")
-							.modal-dialog
-								.modal-content
-									form(angular-validator-submit="logIn()" name="loginForm" novalidate angular-validator)
-										.modal-header
-											button(type="button" class="close" data-dismiss="modal")
-												span &times;
-											h4 Login
-										.modal-body
-													h4 Please enter your login details
-													.alert.alert-danger(ng-if='loginError')
-														strong Oh snap! #{' '}
-														{{loginError}}
+													h4 Please enter your following details
+													.form-group
+														label( control-label for='username') Name
+														input.form-control(type='text', name='username', validate-on='dirty', ng-model='signup.username', ng-pattern='/^[A-z ]+$/', invalid-message="'Enter a valid Name'", required-message="'Name is required'", required)
+													.form-group
+														label( control-label for='phone_number') Phone Number
+														input.form-control(type='text', name='phone_number', validate-on='dirty', ng-model='signup.phone_number', ng-pattern='/^[0-9]+$/', invalid-message="'Enter a valid phone number'", required-message="'Phone number is required'", required)
 													.form-group
 														label( control-label for='email_id') Email ID
-														input.form-control(type='email', name='email_id', validate-on='dirty', ng-model='login.email_id',invalid-message="'Enter a valid Email ID'", required-message="'Email ID is required'", required)
+														input.form-control(type='email', name='email_id', validate-on='dirty', ng-model='signup.email_id', invalid-message="'Enter a valid Email ID'", required-message="'Email ID is required'", required)
 													.form-group
 														label( control-label for='password') Password
-														input.form-control(type='password', name='password', validate-on='dirty', ng-model='login.password', required-message="'Password is required'", required)
+														input.form-control(type='password', name='password', validate-on='dirty', ng-model='signup.password', validator = "passwordValidator(signup.password) === true",invalid-message = "passwordValidator(signup.password)", required)
+													.form-group
+														label( control-label for='confirmPassword') Confirm Password
+														input.form-control(type='password', name='confirmPassword', validate-on='dirty', ng-model='signup.confirmPassword',validator = "signup.password === signup.confirmPassword",
+													invalid-message = "'Passwords do not match!'", required)
+													
+											.modal-footer
+												.form-group
+													button(type="button" class="btn btn-default" data-dismiss="modal") Close
+													button(type='submit',ng-disabled='signUpForm.$invalid' class="btn btn-primary") Sign Up
 
-										.modal-footer
+			.modal.fade#Login( tabindex="-1")
+					.modal-dialog
+						.modal-content
+							form(angular-validator-submit="logIn()" name="loginForm" novalidate angular-validator)
+								.modal-header
+									button(type="button" class="close" data-dismiss="modal")
+										span &times;
+									h4 Login
+								.modal-body
+											h4 Please enter your login details
+											.alert.alert-danger(ng-if='loginError')
+												strong Oh snap! #{' '}
+												{{loginError}}
 											.form-group
-												button(type="button" class="btn btn-default" data-dismiss="modal") Close
-												button(type='submit',ng-disabled='loginForm.$invalid' class="btn btn-primary") Login
+												label( control-label for='email_id') Email ID
+												input.form-control(type='email', name='email_id', validate-on='dirty', ng-model='login.email_id',invalid-message="'Enter a valid Email ID'", required-message="'Email ID is required'", required)
+											.form-group
+												label( control-label for='password') Password
+												input.form-control(type='password', name='password', validate-on='dirty', ng-model='login.password', required-message="'Password is required'", required)
 
-					form.navbar-form#search(role='search')
-						.form-group
-							input.form-control(type='text', placeholder='Search')
-						//- button.btn.btn-default(type='submit')
-						//- 	span(class="glyphicon glyphicon-search")
-								
-
+								.modal-footer
+									.form-group
+										button(type="button" class="btn btn-default" data-dismiss="modal") Close
+										button(type='submit',ng-disabled='loginForm.$invalid' class="btn btn-primary") Login
 		main
 			ui-view
 
+		
+		
+		footer
 	
 		script(src="../bower_components/holderjs/holder.min.js")
 		script(src="../bower_components/modernizr/bin/modernizr")

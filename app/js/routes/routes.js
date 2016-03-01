@@ -46,11 +46,12 @@
             if (isMatch) {
               payload = {
                 'email_id': email_id,
-                'username': user.username
+                'username': user.username,
+                '_id': user._id
               };
               secret = config.get('Security.Secret');
-              token = jwt.sign(user, secret, {
-                expiresIn: 259200
+              token = jwt.sign(payload, secret, {
+                expiresIn: "3 days"
               });
               json = {
                 'token': token
@@ -64,10 +65,11 @@
       });
     });
     apiRoutes.use(function(req, res, next) {
-      var token;
+      var secret, token;
       token = req.body.token || req.query.token || req.headers['x-access-token'];
       if (token) {
-        return jwt.verify(token, config.get('Security.Secret'), function(err, decoded) {
+        secret = config.get('Security.Secret');
+        return jwt.verify(token, secret, function(err, decoded) {
           if (err) {
             return res.status(401).send('Failed to authenticate token');
           } else {
@@ -77,6 +79,29 @@
         });
       } else {
         return res.status(400).send('No token provided');
+      }
+    });
+    apiRoutes.post('/refresh', function(req, res) {
+      var decoded, err, json, payload, secret, token;
+      try {
+        secret = config.get('Security.Secret');
+        token = req.body.token || req.query.token || req.headers['x-access-token'];
+        decoded = jwt.decode(token);
+        payload = {
+          'email_id': decoded.email_id,
+          'username': decoded.username,
+          '_id': decoded._id
+        };
+        token = jwt.sign(payload, secret, {
+          expiresIn: "3 days"
+        });
+        json = {
+          'token': token
+        };
+        return res.send(json);
+      } catch (_error) {
+        err = _error;
+        return res.status(401).send(err);
       }
     });
     apiRoutes.get('/', function(req, res) {
