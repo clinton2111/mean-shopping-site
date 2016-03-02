@@ -1,4 +1,4 @@
-/*! mean-shopping-site - v1.0.0 - 2016-03-01 */(function() {
+/*! mean-shopping-site - v1.0.0 - 2016-03-02 */(function() {
   angular.module('meanShoppingApp', ['ui.router', 'meanShoppingApp.authentication', 'meanShoppingApp.home', 'satellizer', 'ngStorage', 'angular-md5']).config([
     '$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider', 'apiPrefix', '$httpProvider', function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider, apiPrefix, $httpProvider) {
       $stateProvider.state('home', {
@@ -15,7 +15,15 @@
       $authProvider.signupUrl = apiPrefix + '/signUp';
       $authProvider.tokenPrefix = 'meanShoppingApp';
       $authProvider.authHeader = 'x-access-token';
-      return $authProvider.authToken = '';
+      $authProvider.authToken = '';
+      $authProvider.facebook({
+        url: apiPrefix + '/auth/facebook',
+        clientId: '1532207213746557'
+      });
+      return $authProvider.google({
+        url: apiPrefix + '/auth/google',
+        clientId: '448263483500-g0obrhdrt8v40j8tfgopb34sskhd876i.apps.googleusercontent.com'
+      });
     }
   ]).constant('apiPrefix', '/api').run([
     '$rootScope', '$state', '$http', 'apiPrefix', '$q', '$localStorage', '$auth', function($rootScope, state, $http, apiPrefix, $q, localStorage, $auth) {
@@ -128,6 +136,8 @@
           $scope.signup.password = '';
           $scope.signup.confirmPassword = '';
           payload = {};
+          $auth.setToken(data);
+          $scope.isAuthenticated();
           return $('#SignUp').modal('hide');
         }, function(error) {
           return $scope.signUpError = error.data;
@@ -152,6 +162,13 @@
           return $('#Login').modal('hide');
         }, function(error) {
           return $scope.loginError = error.data;
+        });
+      };
+      $scope.authenticate = function(provider) {
+        return $auth.authenticate(provider).then(function(data) {
+          return console.log('You have logged in with ' + provider);
+        }, function(error) {
+          return console.log(error);
         });
       };
       $scope.toggleForgotPass = function() {

@@ -11,6 +11,7 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 	$scope.loginError = null
 	$scope.signUpError = null
 	$scope.username = null
+	
 	$scope.signUp=()->
 		payload=
 			username:$scope.signup.username
@@ -26,6 +27,8 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 			$scope.signup.password = ''
 			$scope.signup.confirmPassword = ''
 			payload = {}
+			$auth.setToken data
+			$scope.isAuthenticated()
 			$('#SignUp').modal('hide')
 		, (error)->
 			$scope.signUpError = error.data
@@ -46,6 +49,13 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 		, (error)->
 			$scope.loginError = error.data
 
+	$scope.authenticate = (provider)-> 
+		$auth.authenticate(provider)
+		.then (data)->
+			console.log 'You have logged in with '+provider
+		, (error)->
+			console.log error
+    
 	$scope.toggleForgotPass = ->
 		if($scope.forgotPassword is false)
 			$scope.forgotPassword = true

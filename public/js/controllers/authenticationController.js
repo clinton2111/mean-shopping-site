@@ -30,6 +30,8 @@
           $scope.signup.password = '';
           $scope.signup.confirmPassword = '';
           payload = {};
+          $auth.setToken(data);
+          $scope.isAuthenticated();
           return $('#SignUp').modal('hide');
         }, function(error) {
           return $scope.signUpError = error.data;
@@ -54,6 +56,13 @@
           return $('#Login').modal('hide');
         }, function(error) {
           return $scope.loginError = error.data;
+        });
+      };
+      $scope.authenticate = function(provider) {
+        return $auth.authenticate(provider).then(function(data) {
+          return console.log('You have logged in with ' + provider);
+        }, function(error) {
+          return console.log(error);
         });
       };
       $scope.toggleForgotPass = function() {

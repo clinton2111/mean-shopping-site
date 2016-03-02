@@ -1,0 +1,56 @@
+body {
+	background-color:lighten($shadow,5%);
+	padding-top: 50px;
+	.navbar{
+		background-color:$white;
+		border-color:$shadow;
+		box-shadow: 0 2px 5px 0 rgba($black, 0.70);
+		li{
+			a{
+				color: $text;
+
+				&:hover {
+					color:$white;
+					background-color:$accent
+				}
+			}
+
+			&:active{
+				a{
+					color: $white;
+				}
+			}
+
+		}
+	}
+	svg {
+		#G1 path {
+			fill: rgba($text, 1);
+		}
+		#G2 path {
+			fill: rgba($accent, 1);
+		}
+		&:hover{
+			#G1 path{
+				fill:rgba($accent, 1);
+			}
+			#G2 path{
+				fill:rgba($text, 1);
+			}
+		}
+	}
+	a {
+		color:$accent;
+		cursor: pointer;
+		&:hover{
+			text-decoration: none;
+			color:$text
+		}
+	}
+	p{
+		color:$text;
+	}
+	h1,h2,h3,h4,h5,h6{
+		color:$black
+	}
+}

@@ -20,7 +20,6 @@
           </g>
         </svg>
         <h1>{{header}}</h1>
-        <h4>Please enter your login details</h4>
         <div ng-if="loginError" class="alert alert-danger"><strong>Oh snap!  </strong>{{loginError}}</div>
         <div class="form-group">
           <label control-label="control-label" for="loginemail_id">Email ID</label>
@@ -34,6 +33,18 @@
           <button type="submit" ng-disabled="loginFormPage.$invalid" class="btn btn-primary btn-lg btn-block">Login</button>
         </div>
         <div class="form-group"><a ng-click="toggleForgotPass()" class="text-right">Recover Password</a></div>
+        <div class="form-group">
+          <div class="signup-or-separator">
+            <h6 class="text">or</h6>
+            <hr/>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-6"><a ng-click="authenticate('facebook')" class="btn btn-block btn-social btn-facebook"><span class="fa fa-facebook"></span>Sign in with Facebook</a></div>
+            <div class="col-md-6"><a ng-click="authenticate('google')" class="btn btn-block btn-social btn-google"><span class="fa fa-google"></span>Sign in with Google</a></div>
+          </div>
+        </div>
       </form>
     </div>
     <div ng-show="forgotPassword">
@@ -55,7 +66,6 @@
           </g>
         </svg>
         <h1>{{header}}</h1>
-        <h4>Please enter your Email ID</h4>
         <div ng-if="loginError" class="alert alert-danger"><strong>Oh snap!  </strong>{{loginError}}</div>
         <div class="form-group">
           <label control-label="control-label" for="recoveremail_id">Email ID</label>
@@ -87,7 +97,6 @@
         </g>
       </svg>
       <h1>{{header}}</h1>
-      <h4>Please enter your recovery details</h4>
       <div class="form-group">
         <label control-label="control-label" for="updatepassword">New Password</label>
         <input type="password" name="updatepassword" validate-on="dirty" ng-model="updatePass.password" validator="passwordValidator(updatePass.password) === true" invalid-message="passwordValidator(updatePass.password)" required="required" class="form-control"/>

@@ -7,7 +7,6 @@ var morgan          = require('morgan');
 var bodyParser      = require('body-parser');
 var methodOverride  = require('method-override');
 var app             = express();
-var jwt    			= require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config 			= require('config')
 
 // Express Configuration
@@ -19,6 +18,7 @@ mongoose.connect(config.get('Database'));
 app.use(express.static(__dirname + '/public'));                 // sets the static files location to public
 app.use('/admin',express.static(__dirname + '/admin'));         // sets the static files location to admin while accessing the admin files
 app.use('/bower_components',  express.static(__dirname + '/bower_components')); // Use BowerComponents
+app.use('/assets',  express.static(__dirname + '/assets'));		// Assets/Images location
 app.use(morgan('dev'));                                         // log with Morgan
 app.use(bodyParser.json());                                     // parse application/json
 app.use(bodyParser.urlencoded({extended: true}));               // parse application/x-www-form-urlencoded

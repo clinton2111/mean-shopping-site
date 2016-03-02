@@ -10,8 +10,6 @@ angular.module 'meanShoppingApp',['ui.router','meanShoppingApp.authentication','
       url: '/auth/:type/:email/:value'
       templateUrl: 'html/auth.html'
       controller: 'authenticationController'
-
-
 	
 	$urlRouterProvider.otherwise '/home'
 
@@ -24,6 +22,14 @@ angular.module 'meanShoppingApp',['ui.router','meanShoppingApp.authentication','
 	$authProvider.tokenPrefix = 'meanShoppingApp';
 	$authProvider.authHeader = 'x-access-token';
 	$authProvider.authToken = '';
+	$authProvider.facebook
+		url: apiPrefix + '/auth/facebook',
+		clientId: '1532207213746557'
+	$authProvider.google
+		url: apiPrefix + '/auth/google',
+		clientId: '448263483500-g0obrhdrt8v40j8tfgopb34sskhd876i.apps.googleusercontent.com'
+
+    
 ]
 .constant 'apiPrefix','/api'
 

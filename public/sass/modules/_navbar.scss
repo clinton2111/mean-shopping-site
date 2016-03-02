@@ -1,18 +1,9 @@
 .navbar {
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
     .navbar-brand {
         max-width: 200px;
         margin-top: -5px;
         #Logo {
             width: 100%;
-            &:hover{
-            	#G1 path{
-            		fill:rgba(#FFBE00, 1);
-            	}
-            	#G2 path{
-            		fill:rgba(#263248, 1);
-            	}
-            }
         }
     }
     #search {

@@ -15,7 +15,15 @@
       $authProvider.signupUrl = apiPrefix + '/signUp';
       $authProvider.tokenPrefix = 'meanShoppingApp';
       $authProvider.authHeader = 'x-access-token';
-      return $authProvider.authToken = '';
+      $authProvider.authToken = '';
+      $authProvider.facebook({
+        url: apiPrefix + '/auth/facebook',
+        clientId: '1532207213746557'
+      });
+      return $authProvider.google({
+        url: apiPrefix + '/auth/google',
+        clientId: '448263483500-g0obrhdrt8v40j8tfgopb34sskhd876i.apps.googleusercontent.com'
+      });
     }
   ]).constant('apiPrefix', '/api').run([
     '$rootScope', '$state', '$http', 'apiPrefix', '$q', '$localStorage', '$auth', function($rootScope, state, $http, apiPrefix, $q, localStorage, $auth) {

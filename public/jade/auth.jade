@@ -5,7 +5,6 @@ section.container-flex
 			form.col-xs-12.centerXY(angular-validator-submit="logIn()" name="loginFormPage" novalidate angular-validator)
 				+logoSVG()
 				h1 {{header}}
-				h4 Please enter your login details
 				.alert.alert-danger(ng-if='loginError')
 					strong Oh snap! #{' '}
 					{{loginError}}
@@ -20,11 +19,25 @@ section.container-flex
 				.form-group
 					a.text-right(ng-click='toggleForgotPass()') Recover Password
 
+				.form-group
+					.signup-or-separator
+						h6.text or
+						hr
+				.form-group
+					.row
+						.col-md-6
+							a.btn.btn-block.btn-social.btn-facebook(ng-click="authenticate('facebook')")
+								span.fa.fa-facebook
+								|Sign in with Facebook
+						.col-md-6
+							a.btn.btn-block.btn-social.btn-google(ng-click="authenticate('google')")
+								span.fa.fa-google
+								|Sign in with Google
+					
 		div(ng-show='forgotPassword')
 			form.col-xs-12.centerXY(angular-validator-submit="recoverPassword()" name="recoveryFormPage" novalidate angular-validator)
 				+logoSVG()
 				h1 {{header}}
-				h4 Please enter your Email ID
 				.alert.alert-danger(ng-if='loginError')
 					strong Oh snap! #{' '}
 					{{loginError}}
@@ -40,7 +53,6 @@ section.container-flex
 		form.col-xs-12.centerXY(angular-validator-submit="updatePassword()" name="updatePasswordPage" novalidate angular-validator)
 			+logoSVG()
 			h1 {{header}}
-			h4 Please enter your recovery details
 			.form-group
 				label( control-label for='updatepassword') New Password
 				input.form-control(type='password', name='updatepassword', validate-on='dirty', ng-model='updatePass.password', validator = "passwordValidator(updatePass.password) === true",invalid-message = "passwordValidator(updatePass.password)", required)

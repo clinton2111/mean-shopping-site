@@ -23,6 +23,7 @@
     "moment": "^2.11.2",
     "satellizer": "^0.14.0",
     "ngstorage": "^0.3.10",
-    "angular-md5": "^0.1.10"
+    "angular-md5": "^0.1.10",
+    "bootstrap-social": "^4.12.0"
   }
 }

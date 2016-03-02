@@ -4,19 +4,18 @@ Schema = mongoose.Schema
 bcrypt = require 'bcrypt-nodejs'
 config = require 'config'
 SALT_WORK_FACTOR = config.get('Security.SALT_WORK_FACTOR')
+u = require 'underscore'
 
 
 # Creates a User Schema. This will be the basis of how user data is stored in the db
 UserSchema = new Schema
 	username: 
 		type: String, 
-		required: true
 	password:
 		type: String
-		required: true
 	email_id:
 		type:String
-		required:true
+		lowercase: true
 		unique:true
 	address:
 		type:String
@@ -24,7 +23,8 @@ UserSchema = new Schema
 		type:String
 	phone_number:
 		type:Number
-		required:true
+	facebook: String
+	google: String
 	created_at: 
 		type: Date
 		default: Date.now
@@ -42,18 +42,19 @@ UserSchema.pre 'save',(next)->
 	if !this.created_at then this.created_at = now 
 
 	user = this
-	# only hash the password if it has been modified (or is new)
-	if  !user.isModified('password') then next()
-	else
-		bcrypt.genSalt SALT_WORK_FACTOR,(err,salt)->
-			if err then next(err)
+	if !((u.isUndefined this.password) || (u.isNull this.password) || (this.password is ""))
+		# only hash the password if it has been modified (or is new)
+		if  !user.isModified('password') then next()
+		else
+			bcrypt.genSalt SALT_WORK_FACTOR,(err,salt)->
+				if err then next(err)
 
-			bcrypt.hash user.password,salt,null,(err,hash)->
-				if err then return next(err)
+				bcrypt.hash user.password,salt,null,(err,hash)->
+					if err then return next(err)
 
-				# override cleartext with hash
-				user.password = hash
-				next()
+					# override cleartext with hash
+					user.password = hash
+	next()
 
 UserSchema.methods.comparePassword = (candidatePassword,cb)->
 	bcrypt.compare candidatePassword,this.password,(err, isMatch)->

@@ -1,58 +1,88 @@
-/* line 1, ../sass/modules/_misc.scss */
+/* line 1, ../sass/modules/_settings.scss */
 body {
+  background-color: #f2f2f2;
   padding-top: 50px;
 }
-/* line 4, ../sass/modules/_misc.scss */
-body svg #G1 path {
-  fill: #263248;
+/* line 4, ../sass/modules/_settings.scss */
+body .navbar {
+  background-color: #FFFFFF;
+  border-color: #e5e5e5;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.7);
 }
-/* line 7, ../sass/modules/_misc.scss */
+/* line 9, ../sass/modules/_settings.scss */
+body .navbar li a {
+  color: #14213d;
+}
+/* line 12, ../sass/modules/_settings.scss */
+body .navbar li a:hover {
+  color: #FFFFFF;
+  background-color: #FFBE00;
+}
+/* line 19, ../sass/modules/_settings.scss */
+body .navbar li:active a {
+  color: #FFFFFF;
+}
+/* line 27, ../sass/modules/_settings.scss */
+body svg #G1 path {
+  fill: #14213d;
+}
+/* line 30, ../sass/modules/_settings.scss */
 body svg #G2 path {
   fill: #ffbe00;
 }
-/* line 11, ../sass/modules/_misc.scss */
+/* line 34, ../sass/modules/_settings.scss */
+body svg:hover #G1 path {
+  fill: #ffbe00;
+}
+/* line 37, ../sass/modules/_settings.scss */
+body svg:hover #G2 path {
+  fill: #14213d;
+}
+/* line 42, ../sass/modules/_settings.scss */
 body a {
+  color: #FFBE00;
   cursor: pointer;
 }
-
-/* line 1, ../sass/modules/_navbar.scss */
-.navbar {
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+/* line 45, ../sass/modules/_settings.scss */
+body a:hover {
+  text-decoration: none;
+  color: #14213d;
 }
-/* line 3, ../sass/modules/_navbar.scss */
+/* line 50, ../sass/modules/_settings.scss */
+body p {
+  color: #14213d;
+}
+/* line 53, ../sass/modules/_settings.scss */
+body h1, body h2, body h3, body h4, body h5, body h6 {
+  color: #000000;
+}
+
+/* line 2, ../sass/modules/_navbar.scss */
 .navbar .navbar-brand {
   max-width: 200px;
   margin-top: -5px;
 }
-/* line 6, ../sass/modules/_navbar.scss */
+/* line 5, ../sass/modules/_navbar.scss */
 .navbar .navbar-brand #Logo {
   width: 100%;
 }
 /* line 9, ../sass/modules/_navbar.scss */
-.navbar .navbar-brand #Logo:hover #G1 path {
-  fill: #ffbe00;
-}
-/* line 12, ../sass/modules/_navbar.scss */
-.navbar .navbar-brand #Logo:hover #G2 path {
-  fill: #263248;
-}
-/* line 18, ../sass/modules/_navbar.scss */
 .navbar #search {
   text-align: center;
 }
-/* line 20, ../sass/modules/_navbar.scss */
+/* line 11, ../sass/modules/_navbar.scss */
 .navbar #search .form-control {
   width: 500px;
 }
 
 @media (max-width: 933px) {
-  /* line 29, ../sass/modules/_navbar.scss */
+  /* line 20, ../sass/modules/_navbar.scss */
   .navbar #search .form-control {
     width: 300px;
   }
 }
 @media (max-width: 790px) {
-  /* line 39, ../sass/modules/_navbar.scss */
+  /* line 30, ../sass/modules/_navbar.scss */
   .navbar #search .form-control {
     width: 100%;
   }
@@ -106,13 +136,40 @@ body a {
   width: 100%;
 }
 
+/* line 20, ../sass/modules/_auth.scss */
+.signup-or-separator {
+  position: relative;
+  height: 34px;
+  text-align: center;
+  background: none;
+}
+/* line 25, ../sass/modules/_auth.scss */
+.signup-or-separator .text {
+  display: inline-block;
+  padding: 8px;
+  margin: 0;
+  background-color: #f2f2f2;
+}
+/* line 31, ../sass/modules/_auth.scss */
+.signup-or-separator hr {
+  width: 90%;
+  margin: -16px auto 10px auto;
+  border-top: 1px solid #dce0e0;
+}
+
 @media (max-width: 650px) {
-  /* line 24, ../sass/modules/_auth.scss */
+  /* line 40, ../sass/modules/_auth.scss */
   .container-flex form svg {
     width: 100%;
   }
-  /* line 29, ../sass/modules/_auth.scss */
+  /* line 45, ../sass/modules/_auth.scss */
   .container-flex .centerXY .form-group {
     width: 100%;
+  }
+}
+@media (max-width: 992px) {
+  /* line 54, ../sass/modules/_auth.scss */
+  .form-group .row a {
+    margin-bottom: 5px;
   }
 }

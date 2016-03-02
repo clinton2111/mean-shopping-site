@@ -8,11 +8,13 @@
     <meta name="author" content="Clinton D/'souza">
     <title>MEAN Shopping Demo</title>
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../bower_components/bootstrap-social/bootstrap-social.css">
     <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
     <header>
-      <nav class="navbar navbar-default navbar-fixed-top">
+      <nav class="navbar navbar-fixed-top">
         <div class="container-fluid">
           <div class="navbar-header">
             <button type="button" data-toggle="collapse" data-target="#mobile-navbar-collapse" aria-expanded="false" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand">
@@ -88,11 +90,8 @@
                   <label control-label for="confirmPassword">Confirm Password</label>
                   <input type="password" name="confirmPassword" validate-on="dirty" ng-model="signup.confirmPassword" validator="signup.password === signup.confirmPassword" invalid-message="'Passwords do not match!'" required class="form-control">
                 </div>
-              </div>
-              <div class="modal-footer">
                 <div class="form-group">
-                  <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-                  <button type="submit" ng-disabled="signUpForm.$invalid" class="btn btn-primary">Sign Up</button>
+                  <button type="submit" ng-disabled="signUpForm.$invalid" class="btn btn-primary btn-lg btn-block">Sign Up</button>
                 </div>
               </div>
             </form>
@@ -118,11 +117,20 @@
                   <label control-label for="password">Password</label>
                   <input type="password" name="password" validate-on="dirty" ng-model="login.password" required-message="'Password is required'" required class="form-control">
                 </div>
-              </div>
-              <div class="modal-footer">
                 <div class="form-group">
-                  <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-                  <button type="submit" ng-disabled="loginForm.$invalid" class="btn btn-primary">Login</button>
+                  <button type="submit" ng-disabled="loginForm.$invalid" class="btn btn-primary btn-lg btn-block">Login</button>
+                </div>
+                <div class="form-group">
+                  <div class="signup-or-separator">
+                    <h6 style="background-color:white" class="text">or</h6>
+                    <hr>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-md-6"><a ng-click="authenticate('facebook')" class="btn btn-block btn-social btn-facebook"><span class="fa fa-facebook"></span>Sign in with Facebook</a></div>
+                    <div class="col-md-6"><a ng-click="authenticate('google')" class="btn btn-block btn-social btn-google"><span class="fa fa-google"></span>Sign in with Google</a></div>
+                  </div>
                 </div>
               </div>
             </form>

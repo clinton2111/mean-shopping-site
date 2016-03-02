@@ -13,6 +13,8 @@ html(ng-app="meanShoppingApp")
 
 		//- Stylesheets
 		link(rel='stylesheet' href='../bower_components/bootstrap/dist/css/bootstrap.css')
+		link(rel='stylesheet' href='../bower_components/font-awesome/css/font-awesome.min.css')
+		link(rel='stylesheet' href='../bower_components/bootstrap-social/bootstrap-social.css')
 		link(rel='stylesheet' href='css/styles.css')
 
 		//- Uncomment in Production
@@ -22,7 +24,7 @@ html(ng-app="meanShoppingApp")
 
 	body
 		header
-			nav.navbar.navbar-default.navbar-fixed-top
+			nav.navbar.navbar-fixed-top
 				.container-fluid
 					.navbar-header
 						button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#mobile-navbar-collapse', aria-expanded='false')
@@ -101,10 +103,9 @@ html(ng-app="meanShoppingApp")
 														input.form-control(type='password', name='confirmPassword', validate-on='dirty', ng-model='signup.confirmPassword',validator = "signup.password === signup.confirmPassword",
 													invalid-message = "'Passwords do not match!'", required)
 													
-											.modal-footer
-												.form-group
-													button(type="button" class="btn btn-default" data-dismiss="modal") Close
-													button(type='submit',ng-disabled='signUpForm.$invalid' class="btn btn-primary") Sign Up
+								
+													.form-group
+														button(type='submit',ng-disabled='signUpForm.$invalid' class="btn btn-primary btn-lg btn-block") Sign Up
 
 			.modal.fade#Login( tabindex="-1")
 					.modal-dialog
@@ -125,11 +126,24 @@ html(ng-app="meanShoppingApp")
 											.form-group
 												label( control-label for='password') Password
 												input.form-control(type='password', name='password', validate-on='dirty', ng-model='login.password', required-message="'Password is required'", required)
+											.form-group
+												button(type='submit',ng-disabled='loginForm.$invalid' class="btn btn-primary btn-lg btn-block") Login
+											.form-group
+												.signup-or-separator
+													h6.text(style="background-color:white") or
+													hr
+											.form-group
+												.row
+													.col-md-6
+														a.btn.btn-block.btn-social.btn-facebook(ng-click="authenticate('facebook')")
+															span.fa.fa-facebook
+															|Sign in with Facebook
+													.col-md-6
+														a.btn.btn-block.btn-social.btn-google(ng-click="authenticate('google')")
+															span.fa.fa-google
+															|Sign in with Google
 
-								.modal-footer
-									.form-group
-										button(type="button" class="btn btn-default" data-dismiss="modal") Close
-										button(type='submit',ng-disabled='loginForm.$invalid' class="btn btn-primary") Login
+					
 		main
 			ui-view
 

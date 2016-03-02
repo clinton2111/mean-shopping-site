@@ -1,5 +1,5 @@
 (function() {
-  var SALT_WORK_FACTOR, Schema, UserSchema, bcrypt, config, mongoose, titleCase;
+  var SALT_WORK_FACTOR, Schema, UserSchema, bcrypt, config, mongoose, titleCase, u;
 
   mongoose = require('mongoose');
 
@@ -11,18 +11,18 @@
 
   SALT_WORK_FACTOR = config.get('Security.SALT_WORK_FACTOR');
 
+  u = require('underscore');
+
   UserSchema = new Schema({
     username: {
-      type: String,
-      required: true
+      type: String
     },
     password: {
-      type: String,
-      required: true
+      type: String
     },
     email_id: {
       type: String,
-      required: true,
+      lowercase: true,
       unique: true
     },
     address: {
@@ -32,9 +32,10 @@
       type: String
     },
     phone_number: {
-      type: Number,
-      required: true
+      type: Number
     },
+    facebook: String,
+    google: String,
     created_at: {
       type: Date,
       "default": Date.now
@@ -54,22 +55,24 @@
       this.created_at = now;
     }
     user = this;
-    if (!user.isModified('password')) {
-      return next();
-    } else {
-      return bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-        if (err) {
-          next(err);
-        }
-        return bcrypt.hash(user.password, salt, null, function(err, hash) {
+    if (!((u.isUndefined(this.password)) || (u.isNull(this.password)) || (this.password === ""))) {
+      if (!user.isModified('password')) {
+        next();
+      } else {
+        bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
           if (err) {
-            return next(err);
+            next(err);
           }
-          user.password = hash;
-          return next();
+          return bcrypt.hash(user.password, salt, null, function(err, hash) {
+            if (err) {
+              return next(err);
+            }
+            return user.password = hash;
+          });
         });
-      });
+      }
     }
+    return next();
   });
 
   UserSchema.methods.comparePassword = function(candidatePassword, cb) {
