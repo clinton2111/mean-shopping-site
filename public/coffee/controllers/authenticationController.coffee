@@ -1,5 +1,5 @@
 angular.module 'meanShoppingApp.authentication',['angularValidator']
-.controller 'authenticationController',['$scope','$auth','$localStorage','md5','$stateParams',($scope,$auth,$localStorage,md5,$stateParams)->
+.controller 'authenticationController',['$scope','$auth','$localStorage','md5','$stateParams','authenticationService',($scope,$auth,$localStorage,md5,$stateParams,authenticationService)->
 	# $scope.$on '$viewContentLoaded', ->
 	if $stateParams.type is 'recovery' and !_.isUndefined($stateParams.value) and !_.isUndefined($stateParams.email)
 		$scope.recovery_screen = true
@@ -11,6 +11,7 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 	$scope.loginError = null
 	$scope.signUpError = null
 	$scope.username = null
+	$scope.recoverStatus = null
 	
 	$scope.signUp=(data)->
 		payload=
@@ -60,6 +61,19 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 		else
 			$scope.forgotPassword = false
 			$scope.header = 'Login'
+
+	$scope.recoverPassword = (recovery)->
+		authenticationService.recoverPassword recovery
+		.then (data)->
+			console.log data.data.message
+			$scope.recoverStatus=
+				status : data.data.message
+				flag : 'success'
+		, (error)->
+			console.log data
+			$scope.recoverStatus = 
+				status : data
+				flag : 'error'
 
 	$scope.isAuthenticated =->
 		authFlag = $auth.isAuthenticated();

@@ -7,6 +7,8 @@ User = require '../models/userModal.js'
 config = require 'config'
 api_prefix = '/api'
 u = require 'underscore'
+sendGridKey = config.get('SendGrid.APIKey')
+sendgrid  = require('sendgrid')(sendGridKey)
 
 module.exports = (app)->
 
@@ -23,6 +25,15 @@ module.exports = (app)->
 			expiresIn:"3 days"
 
 		return token
+
+	# Random String Generator
+	generateRandomString =(length)-> 
+		chars= '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+		result = '';
+		for[0..length-1]
+			result =result + chars[Math.floor(Math.random() * chars.length)]
+		result
+
 
 	# Middleware to make sure user is authenticated
 	ensureAuthenticated = (req,res,next)->
@@ -238,5 +249,46 @@ module.exports = (app)->
 			.status 401
 			.send err
 
+	app.post api_prefix+'/recoverPassword',(req,res)->
+		email_id=req.body.email_id
+
+		User.findOne 
+			email_id:email_id
+		,(err,user)->
+			if err then res.send err
+
+			if !user
+				res
+				.status 401
+				.send 'No user with that email address'
+			else
+				id=user._id
+				username=user.username
+				randomString = generateRandomString 100
+				url = config.get('Host')+'/#/auth/recovery/' + email_id + '/' + randomString
+				msgStructure = 'Hello ' + username+'<br> You have recently requested to retrieve your lost account password. Please click the link below to reset your password. <br><br>'+url
+
+				payload=new sendgrid.Email 
+					to:[email_id]
+					toname:[username]
+					from:'noreply@gameland.com'
+					fromname:'GameLand - Password Recovery'
+					subject:'Password Recovery Link'
+					text:msgStructure.replace(/<\/?[^>]+(>|$)/g, "")
+					html:msgStructure
+					replyto:null
+
+				sendgrid.send payload,(err,json)->
+					if err then res.status(500).send err
+					else
+						user.temp_password = randomString
+						user.save (err)->
+							if err then res.send err
+							else
+								res.status 200
+								.send
+									message:'Message Sent. Please check your Inbox'
+				
+			
 
 

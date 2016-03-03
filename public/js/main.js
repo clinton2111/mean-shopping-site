@@ -106,7 +106,7 @@
 
 (function() {
   angular.module('meanShoppingApp.authentication', ['angularValidator']).controller('authenticationController', [
-    '$scope', '$auth', '$localStorage', 'md5', '$stateParams', function($scope, $auth, $localStorage, md5, $stateParams) {
+    '$scope', '$auth', '$localStorage', 'md5', '$stateParams', 'authenticationService', function($scope, $auth, $localStorage, md5, $stateParams, authenticationService) {
       if ($stateParams.type === 'recovery' && !_.isUndefined($stateParams.value) && !_.isUndefined($stateParams.email)) {
         $scope.recovery_screen = true;
         $scope.header = 'Reset Password';
@@ -117,6 +117,7 @@
       $scope.loginError = null;
       $scope.signUpError = null;
       $scope.username = null;
+      $scope.recoverStatus = null;
       $scope.signUp = function(data) {
         var payload;
         payload = {
@@ -179,6 +180,21 @@
           return $scope.header = 'Login';
         }
       };
+      $scope.recoverPassword = function(recovery) {
+        return authenticationService.recoverPassword(recovery).then(function(data) {
+          console.log(data.data.message);
+          return $scope.recoverStatus = {
+            status: data.data.message,
+            flag: 'success'
+          };
+        }, function(error) {
+          console.log(data);
+          return $scope.recoverStatus = {
+            status: data,
+            flag: 'error'
+          };
+        });
+      };
       $scope.isAuthenticated = function() {
         var authFlag, payload;
         authFlag = $auth.isAuthenticated();
@@ -219,5 +235,31 @@
 
 (function() {
   angular.module('meanShoppingApp.home', []).controller('homeController', ['$scope', function($scope) {}]);
+
+}).call(this);
+
+(function() {
+  angular.module('meanShoppingApp.authentication').factory('authenticationService', [
+    '$http', '$q', 'apiPrefix', function($http, $q, apiPrefix) {
+      return {
+        recoverPassword: function(emailData) {
+          var q;
+          emailData.type = 'recoverPassword';
+          q = $q.defer();
+          $http({
+            url: apiPrefix + '/recoverPassword',
+            method: 'POST',
+            data: emailData,
+            skipAuthorization: true
+          }).then(function(data) {
+            return q.resolve(data);
+          }, function(error) {
+            return q.reject(error);
+          });
+          return q.promise;
+        }
+      };
+    }
+  ]);
 
 }).call(this);

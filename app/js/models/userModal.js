@@ -36,6 +36,7 @@
     },
     facebook: String,
     google: String,
+    temp_password: String,
     created_at: {
       type: Date,
       "default": Date.now

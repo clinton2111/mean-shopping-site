@@ -40,12 +40,15 @@ include ../mixins
 		.centerXY(ng-show='forgotPassword')
 			.tranparentContainer 
 				form.col-xs-12(angular-validator-submit="recoverPassword(recover)" name="recoveryFormPage" novalidate angular-validator)
-				
+						
 					+logoSVG()
 					h1 {{header}}
-					.alert.alert-danger(ng-if='loginError')
+					.alert.alert-danger(ng-if="!recoverStatus.flag == 'success'")
 						strong Oh snap! #{' '}
-						{{loginError}}
+						{{recoverStatus.status}}
+					.alert.alert-success(ng-if="recoverStatus.flag == 'success'")
+						strong Heads up! #{' '}
+						{{recoverStatus.status}}
 					.form-group
 						label( control-label for='recoveremail_id') Email ID
 						input.form-control(type='email', name='recoveremail_id', validate-on='dirty', ng-model='recover.email_id',invalid-message="'Enter a valid Email ID'", required-message="'Email ID is required'", required)

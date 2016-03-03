@@ -1,5 +1,5 @@
 (function() {
-  var User, api_prefix, config, jwt, moment, mongoose, qs, request, u;
+  var User, api_prefix, config, jwt, moment, mongoose, qs, request, sendGridKey, sendgrid, u;
 
   mongoose = require('mongoose');
 
@@ -19,8 +19,12 @@
 
   u = require('underscore');
 
+  sendGridKey = config.get('SendGrid.APIKey');
+
+  sendgrid = require('sendgrid')(sendGridKey);
+
   module.exports = function(app) {
-    var createJWT, ensureAuthenticated;
+    var createJWT, ensureAuthenticated, generateRandomString;
     createJWT = function(email_id, username, id) {
       var payload, secret, token;
       payload = {
@@ -33,6 +37,15 @@
         expiresIn: "3 days"
       });
       return token;
+    };
+    generateRandomString = function(length) {
+      var chars, i, ref, result;
+      chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      result = '';
+      for (i = 0, ref = length - 1; 0 <= ref ? i <= ref : i >= ref; 0 <= ref ? i++ : i--) {
+        result = result + chars[Math.floor(Math.random() * chars.length)];
+      }
+      return result;
     };
     ensureAuthenticated = function(req, res, next) {
       var secret, token;
@@ -276,7 +289,7 @@
         });
       });
     });
-    return app.post(api_prefix + '/refresh', ensureAuthenticated, function(req, res) {
+    app.post(api_prefix + '/refresh', ensureAuthenticated, function(req, res) {
       var decoded, err, json, secret, token;
       try {
         secret = config.get('Security.Secret');
@@ -291,6 +304,53 @@
         err = _error;
         return res.status(401).send(err);
       }
+    });
+    return app.post(api_prefix + '/recoverPassword', function(req, res) {
+      var email_id;
+      email_id = req.body.email_id;
+      return User.findOne({
+        email_id: email_id
+      }, function(err, user) {
+        var id, msgStructure, payload, randomString, url, username;
+        if (err) {
+          res.send(err);
+        }
+        if (!user) {
+          return res.status(401).send('No user with that email address');
+        } else {
+          id = user._id;
+          username = user.username;
+          randomString = generateRandomString(100);
+          url = config.get('Host') + '/#/auth/recovery/' + email_id + '/' + randomString;
+          msgStructure = 'Hello ' + username + '<br> You have recently requested to retrieve your lost account password. Please click the link below to reset your password. <br><br>' + url;
+          payload = new sendgrid.Email({
+            to: [email_id],
+            toname: [username],
+            from: 'noreply@gameland.com',
+            fromname: 'GameLand - Password Recovery',
+            subject: 'Password Recovery Link',
+            text: msgStructure.replace(/<\/?[^>]+(>|$)/g, ""),
+            html: msgStructure,
+            replyto: null
+          });
+          return sendgrid.send(payload, function(err, json) {
+            if (err) {
+              return res.status(500).send(err);
+            } else {
+              user.temp_password = randomString;
+              return user.save(function(err) {
+                if (err) {
+                  return res.send(err);
+                } else {
+                  return res.status(200).send({
+                    message: 'Message Sent. Please check your Inbox'
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
     });
   };
 

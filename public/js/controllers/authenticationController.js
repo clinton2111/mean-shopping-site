@@ -1,6 +1,6 @@
 (function() {
   angular.module('meanShoppingApp.authentication', ['angularValidator']).controller('authenticationController', [
-    '$scope', '$auth', '$localStorage', 'md5', '$stateParams', function($scope, $auth, $localStorage, md5, $stateParams) {
+    '$scope', '$auth', '$localStorage', 'md5', '$stateParams', 'authenticationService', function($scope, $auth, $localStorage, md5, $stateParams, authenticationService) {
       if ($stateParams.type === 'recovery' && !_.isUndefined($stateParams.value) && !_.isUndefined($stateParams.email)) {
         $scope.recovery_screen = true;
         $scope.header = 'Reset Password';
@@ -11,6 +11,7 @@
       $scope.loginError = null;
       $scope.signUpError = null;
       $scope.username = null;
+      $scope.recoverStatus = null;
       $scope.signUp = function(data) {
         var payload;
         payload = {
@@ -72,6 +73,21 @@
           $scope.forgotPassword = false;
           return $scope.header = 'Login';
         }
+      };
+      $scope.recoverPassword = function(recovery) {
+        return authenticationService.recoverPassword(recovery).then(function(data) {
+          console.log(data.data.message);
+          return $scope.recoverStatus = {
+            status: data.data.message,
+            flag: 'success'
+          };
+        }, function(error) {
+          console.log(data);
+          return $scope.recoverStatus = {
+            status: data,
+            flag: 'error'
+          };
+        });
       };
       $scope.isAuthenticated = function() {
         var authFlag, payload;
