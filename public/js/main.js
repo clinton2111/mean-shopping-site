@@ -118,6 +118,7 @@
       $scope.signUpError = null;
       $scope.username = null;
       $scope.recoverStatus = null;
+      $scope.updateStatus = null;
       $scope.signUp = function(data) {
         var payload;
         payload = {
@@ -182,16 +183,32 @@
       };
       $scope.recoverPassword = function(recovery) {
         return authenticationService.recoverPassword(recovery).then(function(data) {
-          console.log(data.data.message);
           return $scope.recoverStatus = {
             status: data.data.message,
             flag: 'success'
           };
         }, function(error) {
-          console.log(data);
           return $scope.recoverStatus = {
-            status: data,
+            status: error.data.message,
             flag: 'error'
+          };
+        });
+      };
+      $scope.updatePassword = function(data) {
+        data = {
+          password: md5.createHash(data.password || ''),
+          email_id: $stateParams.email,
+          temp_password: $stateParams.value
+        };
+        return authenticationService.updatePassword(data).then(function(data) {
+          return $scope.updateStatus = {
+            status: data.data.message,
+            flag: 'success'
+          };
+        }, function(error) {
+          return $scope.updateStatus = {
+            status: data.data.message,
+            flag: 'success'
           };
         });
       };
@@ -244,12 +261,26 @@
       return {
         recoverPassword: function(emailData) {
           var q;
-          emailData.type = 'recoverPassword';
           q = $q.defer();
           $http({
             url: apiPrefix + '/recoverPassword',
             method: 'POST',
             data: emailData,
+            skipAuthorization: true
+          }).then(function(data) {
+            return q.resolve(data);
+          }, function(error) {
+            return q.reject(error);
+          });
+          return q.promise;
+        },
+        updatePassword: function(passwordData) {
+          var q;
+          q = $q.defer();
+          $http({
+            url: apiPrefix + '/updatePassword',
+            method: 'POST',
+            data: passwordData,
             skipAuthorization: true
           }).then(function(data) {
             return q.resolve(data);

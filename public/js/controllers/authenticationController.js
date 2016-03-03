@@ -12,6 +12,7 @@
       $scope.signUpError = null;
       $scope.username = null;
       $scope.recoverStatus = null;
+      $scope.updateStatus = null;
       $scope.signUp = function(data) {
         var payload;
         payload = {
@@ -76,16 +77,32 @@
       };
       $scope.recoverPassword = function(recovery) {
         return authenticationService.recoverPassword(recovery).then(function(data) {
-          console.log(data.data.message);
           return $scope.recoverStatus = {
             status: data.data.message,
             flag: 'success'
           };
         }, function(error) {
-          console.log(data);
           return $scope.recoverStatus = {
-            status: data,
+            status: error.data.message,
             flag: 'error'
+          };
+        });
+      };
+      $scope.updatePassword = function(data) {
+        data = {
+          password: md5.createHash(data.password || ''),
+          email_id: $stateParams.email,
+          temp_password: $stateParams.value
+        };
+        return authenticationService.updatePassword(data).then(function(data) {
+          return $scope.updateStatus = {
+            status: data.data.message,
+            flag: 'success'
+          };
+        }, function(error) {
+          return $scope.updateStatus = {
+            status: data.data.message,
+            flag: 'success'
           };
         });
       };

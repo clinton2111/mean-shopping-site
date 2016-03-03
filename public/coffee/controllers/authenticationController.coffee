@@ -12,6 +12,7 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 	$scope.signUpError = null
 	$scope.username = null
 	$scope.recoverStatus = null
+	$scope.updateStatus = null
 	
 	$scope.signUp=(data)->
 		payload=
@@ -65,15 +66,30 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 	$scope.recoverPassword = (recovery)->
 		authenticationService.recoverPassword recovery
 		.then (data)->
-			console.log data.data.message
 			$scope.recoverStatus=
 				status : data.data.message
 				flag : 'success'
 		, (error)->
-			console.log data
 			$scope.recoverStatus = 
-				status : data
+				status : error.data.message
 				flag : 'error'
+
+	$scope.updatePassword = (data) ->
+		data =
+			password: md5.createHash(data.password || '')
+			email_id: $stateParams.email
+			temp_password: $stateParams.value
+		authenticationService.updatePassword(data)
+		.then (data)->
+			$scope.updateStatus =
+				status : data.data.message
+				flag : 'success'
+		, (error)->
+			$scope.updateStatus =
+				status : data.data.message
+				flag : 'success'
+		
+
 
 	$scope.isAuthenticated =->
 		authFlag = $auth.isAuthenticated();

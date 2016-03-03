@@ -9,6 +9,8 @@ api_prefix = '/api'
 u = require 'underscore'
 sendGridKey = config.get('SendGrid.APIKey')
 sendgrid  = require('sendgrid')(sendGridKey)
+SALT_WORK_FACTOR = config.get('Security.SALT_WORK_FACTOR')
+bcrypt = require 'bcrypt-nodejs'
 
 module.exports = (app)->
 
@@ -34,7 +36,6 @@ module.exports = (app)->
 			result =result + chars[Math.floor(Math.random() * chars.length)]
 		result
 
-
 	# Middleware to make sure user is authenticated
 	ensureAuthenticated = (req,res,next)->
 		token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -52,6 +53,18 @@ module.exports = (app)->
 			res
 			.status 400
 			.send 'No token provided'
+
+	#Bcrypt passwords when updating
+	bcryptPassword = (password)->
+		bcrypt.genSalt SALT_WORK_FACTOR,(err,salt)->
+			if err then next(err)
+
+			bcrypt.hash password,salt,null,(err,hash)->
+				if err then return next(err)
+
+				# override cleartext with hash
+				hash
+
 
 	app.post api_prefix+'/signUp',(req,res)->
 		newUser = new User req.body
@@ -122,13 +135,13 @@ module.exports = (app)->
 				if response.statusCode is not 200 then res.status(500).send {message:profile.error.message}
 				if req.header 'x-access-token'
 					User.findOne
-						facebook:profile.id
+						'social_id.facebook':profile.id
 					,(err,existingUser)->
 						token = req.body.token || req.query.token || req.headers['x-access-token']
 						payload  = jwt.decode token
 						User.findById payload._id,(err,user)->
 							if !user then res.status(400).send({ message: 'User not found' })
-							user.facebook = profile.id
+							user.social_id.facebook = profile.id
 							user.username = profile.name
 							user.email_id = profile.email
 
@@ -141,8 +154,8 @@ module.exports = (app)->
 						email_id:profile.email
 					,(err,existingUser)->
 						if existingUser
-							if (!existingUser.facebook) || (u.isUndefined existingUser.facebook) || (u.isNull existingUser.facebook)
-								existingUser.facebook = profile.id
+							if (!existingUser.social_id.facebook) || (u.isUndefined existingUser.social_id.facebook) || (u.isNull existingUser.social_id.facebook)
+								existingUser.social_id.facebook = profile.id
 								existingUser.save (err)->
 									if err
 										res.send err
@@ -152,7 +165,7 @@ module.exports = (app)->
 
 						else
 							user=new User()
-							user.facebook = profile.id
+							user.social_id.facebook = profile.id
 							user.username = profile.name
 							user.email_id = profile.email
 							user.save (err,savedUser)->
@@ -194,13 +207,13 @@ module.exports = (app)->
 				# Step 3a. Link user accounts
 				if req.header 'x-access-token'
 					User.findOne
-						google:profile.sub
+						'social_id.google':profile.sub
 					,(err,existingUser)->
 						token = req.body.token || req.query.token || req.headers['x-access-token']
 						payload  = jwt.decode token
 						User.findById payload._id,(err,user)->
 							if !user then res.status(400).send({ message: 'User not found' })
-							user.google = profile.sub
+							user.social_id.google = profile.sub
 							user.username = profile.name
 							user.email_id = profile.email
 
@@ -215,8 +228,8 @@ module.exports = (app)->
 					,(err,existingUser)->
 						if existingUser
 							
-							if (!existingUser.google) || (u.isUndefined existingUser.google) || (u.isNull existingUser.google)
-								existingUser.google = profile.sub
+							if (!existingUser.social_id.google) || (u.isUndefined existingUser.social_id.google) || (u.isNull existingUser.social_id.google)
+								existingUser.social_id.google = profile.sub
 								existingUser.save (err)->
 									if err
 										res.send err
@@ -226,7 +239,7 @@ module.exports = (app)->
 
 						else
 							user=new User()
-							user.google = profile.sub
+							user.social_id.google = profile.sub
 							user.username = profile.name
 							user.email_id = profile.email
 							user.save (err,savedUser)->
@@ -260,7 +273,8 @@ module.exports = (app)->
 			if !user
 				res
 				.status 401
-				.send 'No user with that email address'
+				.send 
+					message:'No user with that email address'
 			else
 				id=user._id
 				username=user.username
@@ -289,6 +303,29 @@ module.exports = (app)->
 								.send
 									message:'Message Sent. Please check your Inbox'
 				
+	app.post api_prefix+'/updatePassword',(req,res)->
+		email_id = req.body.email_id
+		temp_password=req.body.temp_password
+		password=req.body.password
+
+		User.findOne
+			email_id:email_id
+			temp_password:temp_password
+		,'password temp_password'
+		,(err,user)->
+			console.log user
+			if err then res.send err
 			
 
+			if !user
+				res.status 500
+				.send
+					message:'Something went wrong. Try again later'
+			else
+				user.temp_password = null
+				user.password = password
+				user.save (err)->
+					res.status 200
+					.send
+						message:'Password Changed Successfully, Please login to continue'
 

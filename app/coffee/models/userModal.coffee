@@ -23,8 +23,9 @@ UserSchema = new Schema
 		type:String
 	phone_number:
 		type:Number
-	facebook: String
-	google: String
+	social_id:
+		facebook:String
+		google:String
 	temp_password:String
 	created_at: 
 		type: Date
@@ -38,7 +39,7 @@ UserSchema.pre 'save',(next)->
 	now = new Date()
 	this.updated_at = now
 
-	this.username = titleCase this.username
+	if this.username then this.username = titleCase this.username
 
 	if !this.created_at then this.created_at = now 
 
@@ -65,7 +66,6 @@ UserSchema.methods.comparePassword = (candidatePassword,cb)->
 titleCase = (str)->
     str.replace /\w\S*/g,(txt)->
     	txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-
 
 
 # Exports the UserSchema for use elsewhere. Sets the MongoDB collection to be used as: "shoppingsite-users"

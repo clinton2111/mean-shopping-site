@@ -1,5 +1,5 @@
 (function() {
-  var User, api_prefix, config, jwt, moment, mongoose, qs, request, sendGridKey, sendgrid, u;
+  var SALT_WORK_FACTOR, User, api_prefix, bcrypt, config, jwt, moment, mongoose, qs, request, sendGridKey, sendgrid, u;
 
   mongoose = require('mongoose');
 
@@ -23,8 +23,12 @@
 
   sendgrid = require('sendgrid')(sendGridKey);
 
+  SALT_WORK_FACTOR = config.get('Security.SALT_WORK_FACTOR');
+
+  bcrypt = require('bcrypt-nodejs');
+
   module.exports = function(app) {
-    var createJWT, ensureAuthenticated, generateRandomString;
+    var bcryptPassword, createJWT, ensureAuthenticated, generateRandomString;
     createJWT = function(email_id, username, id) {
       var payload, secret, token;
       payload = {
@@ -63,6 +67,19 @@
       } else {
         return res.status(400).send('No token provided');
       }
+    };
+    bcryptPassword = function(password) {
+      return bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+        if (err) {
+          next(err);
+        }
+        return bcrypt.hash(password, salt, null, function(err, hash) {
+          if (err) {
+            return next(err);
+          }
+          return hash;
+        });
+      });
     };
     app.post(api_prefix + '/signUp', function(req, res) {
       var newUser;
@@ -143,7 +160,7 @@
           }
           if (req.header('x-access-token')) {
             return User.findOne({
-              facebook: profile.id
+              'social_id.facebook': profile.id
             }, function(err, existingUser) {
               var payload, token;
               token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -154,7 +171,7 @@
                     message: 'User not found'
                   });
                 }
-                user.facebook = profile.id;
+                user.social_id.facebook = profile.id;
                 user.username = profile.name;
                 user.email_id = profile.email;
                 return user.save(function(err, savedUser) {
@@ -171,8 +188,8 @@
             }, function(err, existingUser) {
               var token, user;
               if (existingUser) {
-                if ((!existingUser.facebook) || (u.isUndefined(existingUser.facebook)) || (u.isNull(existingUser.facebook))) {
-                  existingUser.facebook = profile.id;
+                if ((!existingUser.social_id.facebook) || (u.isUndefined(existingUser.social_id.facebook)) || (u.isNull(existingUser.social_id.facebook))) {
+                  existingUser.social_id.facebook = profile.id;
                   existingUser.save(function(err) {
                     if (err) {
                       return res.send(err);
@@ -185,7 +202,7 @@
                 });
               } else {
                 user = new User();
-                user.facebook = profile.id;
+                user.social_id.facebook = profile.id;
                 user.username = profile.name;
                 user.email_id = profile.email;
                 return user.save(function(err, savedUser) {
@@ -232,7 +249,7 @@
           }
           if (req.header('x-access-token')) {
             return User.findOne({
-              google: profile.sub
+              'social_id.google': profile.sub
             }, function(err, existingUser) {
               var payload;
               token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -243,7 +260,7 @@
                     message: 'User not found'
                   });
                 }
-                user.google = profile.sub;
+                user.social_id.google = profile.sub;
                 user.username = profile.name;
                 user.email_id = profile.email;
                 return user.save(function(err, savedUser) {
@@ -260,8 +277,8 @@
             }, function(err, existingUser) {
               var user;
               if (existingUser) {
-                if ((!existingUser.google) || (u.isUndefined(existingUser.google)) || (u.isNull(existingUser.google))) {
-                  existingUser.google = profile.sub;
+                if ((!existingUser.social_id.google) || (u.isUndefined(existingUser.social_id.google)) || (u.isNull(existingUser.social_id.google))) {
+                  existingUser.social_id.google = profile.sub;
                   existingUser.save(function(err) {
                     if (err) {
                       return res.send(err);
@@ -274,7 +291,7 @@
                 });
               } else {
                 user = new User();
-                user.google = profile.sub;
+                user.social_id.google = profile.sub;
                 user.username = profile.name;
                 user.email_id = profile.email;
                 return user.save(function(err, savedUser) {
@@ -305,7 +322,7 @@
         return res.status(401).send(err);
       }
     });
-    return app.post(api_prefix + '/recoverPassword', function(req, res) {
+    app.post(api_prefix + '/recoverPassword', function(req, res) {
       var email_id;
       email_id = req.body.email_id;
       return User.findOne({
@@ -316,7 +333,9 @@
           res.send(err);
         }
         if (!user) {
-          return res.status(401).send('No user with that email address');
+          return res.status(401).send({
+            message: 'No user with that email address'
+          });
         } else {
           id = user._id;
           username = user.username;
@@ -348,6 +367,34 @@
                 }
               });
             }
+          });
+        }
+      });
+    });
+    return app.post(api_prefix + '/updatePassword', function(req, res) {
+      var email_id, password, temp_password;
+      email_id = req.body.email_id;
+      temp_password = req.body.temp_password;
+      password = req.body.password;
+      return User.findOne({
+        email_id: email_id,
+        temp_password: temp_password
+      }, 'password temp_password', function(err, user) {
+        console.log(user);
+        if (err) {
+          res.send(err);
+        }
+        if (!user) {
+          return res.status(500).send({
+            message: 'Something went wrong. Try again later'
+          });
+        } else {
+          user.temp_password = null;
+          user.password = password;
+          return user.save(function(err) {
+            return res.status(200).send({
+              message: 'Password Changed Successfully, Please login to continue'
+            });
           });
         }
       });

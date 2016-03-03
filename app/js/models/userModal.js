@@ -34,8 +34,10 @@
     phone_number: {
       type: Number
     },
-    facebook: String,
-    google: String,
+    social_id: {
+      facebook: String,
+      google: String
+    },
     temp_password: String,
     created_at: {
       type: Date,
@@ -51,7 +53,9 @@
     var now, user;
     now = new Date();
     this.updated_at = now;
-    this.username = titleCase(this.username);
+    if (this.username) {
+      this.username = titleCase(this.username);
+    }
     if (!this.created_at) {
       this.created_at = now;
     }

@@ -64,6 +64,12 @@ include ../mixins
 			
 					+logoSVG()
 					h1 {{header}}
+					.alert.alert-danger(ng-if="!updateStatus.flag == 'success'")
+						strong Oh snap! #{' '}
+						{{updateStatus.status}}
+					.alert.alert-success(ng-if="updateStatus.flag == 'success'")
+						strong Heads up! #{' '}
+						{{updateStatus.status}}
 					.form-group
 						label( control-label for='updatepassword') New Password
 						input.form-control(type='password', name='updatepassword', validate-on='dirty', ng-model='updatePass.password', validator = "passwordValidator(updatePass.password) === true",invalid-message = "passwordValidator(updatePass.password)", required)
