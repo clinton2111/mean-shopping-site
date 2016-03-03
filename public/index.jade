@@ -15,6 +15,7 @@ html(ng-app="meanShoppingApp")
 		link(rel='stylesheet' href='../bower_components/bootstrap/dist/css/bootstrap.css')
 		link(rel='stylesheet' href='../bower_components/font-awesome/css/font-awesome.min.css')
 		link(rel='stylesheet' href='../bower_components/bootstrap-social/bootstrap-social.css')
+		link(rel='stylesheet' href='../bower_components/angular-toastr/dist/angular-toastr.min.css')
 		link(rel='stylesheet' href='css/styles.css')
 
 		//- Uncomment in Production
@@ -80,9 +81,6 @@ html(ng-app="meanShoppingApp")
 												button(type="button" class="close" data-dismiss="modal")
 													span &times;
 												h4 Sign Up For Free
-												.alert.alert-danger(ng-if='signUpError')
-															strong Oh snap! #{' '}
-															{{signUpError}}
 											.modal-body
 												
 													h4 Please enter your following details
@@ -117,9 +115,6 @@ html(ng-app="meanShoppingApp")
 									h4 Login
 								.modal-body
 											h4 Please enter your login details
-											.alert.alert-danger(ng-if='loginError')
-												strong Oh snap! #{' '}
-												{{loginError}}
 											.form-group
 												label( control-label for='email_id') Email ID
 												input.form-control(type='email', name='email_id', validate-on='dirty', ng-model='login.email_id',invalid-message="'Enter a valid Email ID'", required-message="'Email ID is required'", required)
@@ -163,6 +158,8 @@ html(ng-app="meanShoppingApp")
 		script(src='../bower_components/ngstorage/ngStorage.min.js')
 		script(src='../bower_components/moment/min/moment.min.js')
 		script(src='../bower_components/underscore/underscore-min.js')
+		script(src='../bower_components/angular-animate/angular-animate.min.js')
+		script(src='../bower_components/angular-toastr/dist/angular-toastr.tpls.min.js')
 
 		script(src="js/main.js")
 

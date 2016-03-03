@@ -1,5 +1,5 @@
-angular.module 'meanShoppingApp',['ui.router','meanShoppingApp.authentication','meanShoppingApp.home','satellizer','ngStorage','angular-md5']
-.config ['$stateProvider','$urlRouterProvider','$authProvider','$locationProvider','apiPrefix','$httpProvider',($stateProvider, $urlRouterProvider,$authProvider,$locationProvider,apiPrefix,$httpProvider)->
+angular.module 'meanShoppingApp',['ui.router','meanShoppingApp.authentication','meanShoppingApp.home','satellizer','ngStorage','angular-md5','meanShoppingApp.toastr']
+.config ['$stateProvider','$urlRouterProvider','$authProvider','$locationProvider','apiPrefix','$httpProvider','toastrConfig',($stateProvider, $urlRouterProvider,$authProvider,$locationProvider,apiPrefix,$httpProvider,toastrConfig)->
 	$stateProvider
 	.state 'home',
 		url:'/home'
@@ -28,6 +28,10 @@ angular.module 'meanShoppingApp',['ui.router','meanShoppingApp.authentication','
 	$authProvider.google
 		url: apiPrefix + '/auth/google',
 		clientId: '448263483500-g0obrhdrt8v40j8tfgopb34sskhd876i.apps.googleusercontent.com'
+
+	angular.extend toastrConfig,
+		positionClass: 'toast-top-center'
+		timeOut: 4000
 
     
 ]

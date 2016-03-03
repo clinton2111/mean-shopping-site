@@ -1,5 +1,5 @@
 angular.module 'meanShoppingApp.authentication',['angularValidator']
-.controller 'authenticationController',['$scope','$auth','$localStorage','md5','$stateParams','authenticationService',($scope,$auth,$localStorage,md5,$stateParams,authenticationService)->
+.controller 'authenticationController',['$scope','$auth','$localStorage','md5','$stateParams','authenticationService','toastrService',($scope,$auth,$localStorage,md5,$stateParams,authenticationService,toastrService)->
 	# $scope.$on '$viewContentLoaded', ->
 	if $stateParams.type is 'recovery' and !_.isUndefined($stateParams.value) and !_.isUndefined($stateParams.email)
 		$scope.recovery_screen = true
@@ -8,11 +8,7 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 		$scope.recovery_screen = false
 		$scope.header = 'Login'
 
-	$scope.loginError = null
-	$scope.signUpError = null
 	$scope.username = null
-	$scope.recoverStatus = null
-	$scope.updateStatus = null
 	
 	$scope.signUp=(data)->
 		payload=
@@ -31,8 +27,9 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 			$auth.setToken data
 			$scope.isAuthenticated()
 			$('#SignUp').modal('hide')
+			toastrService.createToast 'success',data.data.message,'Welcome'
 		, (error)->
-			$scope.signUpError = error.data
+			toastrService.createToast 'error',error.data.message,'Error'
 
 	$scope.logIn=(data)->
 		payload=
@@ -44,16 +41,17 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 			$localStorage.resetDate = moment().format('DD-MM-YYYY')
 			$scope.isAuthenticated()
 			$('#Login').modal('hide')
+			toastrService.createToast 'success',data.data.message,'Welcome'
 		, (error)->
-			$scope.loginError = error.data
+			toastrService.createToast 'error',error.data.message,'Error'
 
 	$scope.authenticate = (provider)-> 
 		$auth.authenticate(provider)
 		.then (data)->
-			console.log 'You have logged in with '+provider
 			if $('#Login').is(':visible') then $('#Login').modal('hide')
+			toastrService.createToast 'success',data.data.message, 'Welcome'
 		, (error)->
-			console.log error
+			toastrService.createToast 'error',error.data.message,'Error'
     
 	$scope.toggleForgotPass = ->
 		if($scope.forgotPassword is false)
@@ -66,13 +64,9 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 	$scope.recoverPassword = (recovery)->
 		authenticationService.recoverPassword recovery
 		.then (data)->
-			$scope.recoverStatus=
-				status : data.data.message
-				flag : 'success'
+			toastrService.createToast 'success',data.data.message,'Message Sent'
 		, (error)->
-			$scope.recoverStatus = 
-				status : error.data.message
-				flag : 'error'
+			toastrService.createToast 'error',error.data.message,'Error'
 
 	$scope.updatePassword = (data) ->
 		data =
@@ -81,16 +75,10 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 			temp_password: $stateParams.value
 		authenticationService.updatePassword(data)
 		.then (data)->
-			$scope.updateStatus =
-				status : data.data.message
-				flag : 'success'
+			toastrService.createToast 'success',data.data.message,'Success'
 		, (error)->
-			$scope.updateStatus =
-				status : data.data.message
-				flag : 'success'
-		
-
-
+			toastrService.createToast 'error',error.data.message,'Error'
+	
 	$scope.isAuthenticated =->
 		authFlag = $auth.isAuthenticated();
 		if !authFlag then return authFlag
@@ -113,6 +101,7 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 	$scope.logout=->
 		$auth.logout();
 		$scope.username = null
+		toastrService.createToast 'success','Hope to see you back soon.','You have been logged out'
 
 	$scope.$watch ['username'], ()->
 		$scope.$apply

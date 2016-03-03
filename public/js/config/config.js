@@ -1,6 +1,6 @@
 (function() {
-  angular.module('meanShoppingApp', ['ui.router', 'meanShoppingApp.authentication', 'meanShoppingApp.home', 'satellizer', 'ngStorage', 'angular-md5']).config([
-    '$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider', 'apiPrefix', '$httpProvider', function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider, apiPrefix, $httpProvider) {
+  angular.module('meanShoppingApp', ['ui.router', 'meanShoppingApp.authentication', 'meanShoppingApp.home', 'satellizer', 'ngStorage', 'angular-md5', 'meanShoppingApp.toastr']).config([
+    '$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider', 'apiPrefix', '$httpProvider', 'toastrConfig', function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider, apiPrefix, $httpProvider, toastrConfig) {
       $stateProvider.state('home', {
         url: '/home',
         templateUrl: 'html/home.html',
@@ -20,9 +20,13 @@
         url: apiPrefix + '/auth/facebook',
         clientId: '1532207213746557'
       });
-      return $authProvider.google({
+      $authProvider.google({
         url: apiPrefix + '/auth/google',
         clientId: '448263483500-g0obrhdrt8v40j8tfgopb34sskhd876i.apps.googleusercontent.com'
+      });
+      return angular.extend(toastrConfig, {
+        positionClass: 'toast-top-center',
+        timeOut: 4000
       });
     }
   ]).constant('apiPrefix', '/api').run([

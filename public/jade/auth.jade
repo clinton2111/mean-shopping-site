@@ -8,9 +8,7 @@ include ../mixins
 				form.col-xs-12(angular-validator-submit="logIn(login)" name="loginFormPage" novalidate angular-validator)
 					+logoSVG()
 					h1 {{header}}
-					.alert.alert-danger(ng-if='loginError')
-						strong Oh snap! #{' '}
-						{{loginError}}
+
 					.form-group
 						label( control-label for='loginmail_id') Email ID
 						input.form-control(type='email', name='loginmail_id', validate-on='dirty', ng-model='login.email_id',invalid-message="'Enter a valid Email ID'", required-message="'Email ID is required'", required)
@@ -43,12 +41,7 @@ include ../mixins
 						
 					+logoSVG()
 					h1 {{header}}
-					.alert.alert-danger(ng-if="!recoverStatus.flag == 'success'")
-						strong Oh snap! #{' '}
-						{{recoverStatus.status}}
-					.alert.alert-success(ng-if="recoverStatus.flag == 'success'")
-						strong Heads up! #{' '}
-						{{recoverStatus.status}}
+
 					.form-group
 						label( control-label for='recoveremail_id') Email ID
 						input.form-control(type='email', name='recoveremail_id', validate-on='dirty', ng-model='recover.email_id',invalid-message="'Enter a valid Email ID'", required-message="'Email ID is required'", required)
@@ -64,12 +57,7 @@ include ../mixins
 			
 					+logoSVG()
 					h1 {{header}}
-					.alert.alert-danger(ng-if="!updateStatus.flag == 'success'")
-						strong Oh snap! #{' '}
-						{{updateStatus.status}}
-					.alert.alert-success(ng-if="updateStatus.flag == 'success'")
-						strong Heads up! #{' '}
-						{{updateStatus.status}}
+
 					.form-group
 						label( control-label for='updatepassword') New Password
 						input.form-control(type='password', name='updatepassword', validate-on='dirty', ng-model='updatePass.password', validator = "passwordValidator(updatePass.password) === true",invalid-message = "passwordValidator(updatePass.password)", required)

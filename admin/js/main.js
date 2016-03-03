@@ -1,1 +1,1 @@
-/*! mean-shopping-site - v1.0.0 - 2016-03-03 *//*! mean-shopping-site - v1.0.0 - 2016-02-29 */
+/*! mean-shopping-site - v1.0.0 - 2016-03-04 *//*! mean-shopping-site - v1.0.0 - 2016-02-29 */

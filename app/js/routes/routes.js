@@ -87,11 +87,14 @@
       return newUser.save(function(err, result) {
         var token;
         if (err) {
-          return res.status(500).send(err);
+          return res.status(500).send({
+            message: err
+          });
         } else {
           token = createJWT(result.email_id, result.username, result._id);
           return res.status(201).send({
-            token: token
+            token: token,
+            message: 'Welcome to Gameland ' + result.username
           });
         }
       });
@@ -107,21 +110,25 @@
           res.send(err);
         }
         if (!user) {
-          return res.status(401).send('User not found');
+          return res.status(401).send({
+            message: 'User not found'
+          });
         } else {
           return user.comparePassword(password, function(err, isMatch) {
-            var json, token;
+            var token;
             if (err) {
               res.send(err);
             }
             if (isMatch) {
               token = createJWT(email_id, user.username, user._id);
-              json = {
-                'token': token
-              };
-              return res.send(json);
+              return res.send({
+                token: token,
+                message: 'Login Successful'
+              });
             } else {
-              return res.status(401).send('Incorrect Password');
+              return res.status(401).send({
+                message: 'Incorrect Password'
+              });
             }
           });
         }
@@ -175,10 +182,17 @@
                 user.username = profile.name;
                 user.email_id = profile.email;
                 return user.save(function(err, savedUser) {
-                  token = createJWT(user.email_id, user.username, savedUser._id);
-                  return res.send({
-                    token: token
-                  });
+                  if (err) {
+                    return res.send({
+                      message: err
+                    });
+                  } else {
+                    token = createJWT(user.email_id, user.username, savedUser._id);
+                    return res.send({
+                      token: token,
+                      message: 'Logged in through Facebook'
+                    });
+                  }
                 });
               });
             });
@@ -192,13 +206,16 @@
                   existingUser.social_id.facebook = profile.id;
                   existingUser.save(function(err) {
                     if (err) {
-                      return res.send(err);
+                      return res.send({
+                        message: err
+                      });
                     }
                   });
                 }
                 token = createJWT(existingUser.email_id, existingUser.username, existingUser._id);
                 return res.send({
-                  token: token
+                  token: token,
+                  message: 'Logged in through Facebook'
                 });
               } else {
                 user = new User();
@@ -208,7 +225,8 @@
                 return user.save(function(err, savedUser) {
                   token = createJWT(user.email_id, user.username, savedUser._id);
                   return res.send({
-                    token: token
+                    token: token,
+                    message: 'Logged in through Facebook'
                   });
                 });
               }
@@ -264,10 +282,17 @@
                 user.username = profile.name;
                 user.email_id = profile.email;
                 return user.save(function(err, savedUser) {
-                  token = createJWT(user.email_id, user.username, savedUser._id);
-                  return res.send({
-                    token: token
-                  });
+                  if (err) {
+                    return res.send({
+                      message: err
+                    });
+                  } else {
+                    token = createJWT(user.email_id, user.username, savedUser._id);
+                    return res.send({
+                      token: token,
+                      message: 'Logged in through Google'
+                    });
+                  }
                 });
               });
             });
@@ -281,13 +306,16 @@
                   existingUser.social_id.google = profile.sub;
                   existingUser.save(function(err) {
                     if (err) {
-                      return res.send(err);
+                      return res.send({
+                        message: err
+                      });
                     }
                   });
                 }
                 token = createJWT(existingUser.email_id, existingUser.username, existingUser._id);
                 return res.send({
-                  token: token
+                  token: token,
+                  message: 'Logged in through Google'
                 });
               } else {
                 user = new User();
@@ -297,7 +325,8 @@
                 return user.save(function(err, savedUser) {
                   token = createJWT(user.email_id, user.username, savedUser._id);
                   return res.send({
-                    token: token
+                    token: token,
+                    message: 'Logged in through Google'
                   });
                 });
               }
@@ -319,7 +348,9 @@
         return res.send(json);
       } catch (_error) {
         err = _error;
-        return res.status(401).send(err);
+        return res.status(401).send({
+          message: err
+        });
       }
     });
     app.post(api_prefix + '/recoverPassword', function(req, res) {
@@ -362,7 +393,7 @@
                   return res.send(err);
                 } else {
                   return res.status(200).send({
-                    message: 'Message Sent. Please check your Inbox'
+                    message: 'Please check your Inbox'
                   });
                 }
               });

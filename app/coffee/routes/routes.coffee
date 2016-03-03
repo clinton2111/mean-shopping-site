@@ -73,12 +73,15 @@ module.exports = (app)->
 			if err 
 				res
 				.status 500
-				.send err
+				.send 
+					message:err
 			else
 				token = createJWT(result.email_id,result.username,result._id);
 				res
 				.status 201
-				.send token: token
+				.send 
+					token: token
+					message:'Welcome to Gameland '+result.username
 
 	app.post api_prefix+'/authenticate',(req,res)->
 		email_id = req.body.email_id
@@ -90,7 +93,8 @@ module.exports = (app)->
 			if !user
 				res
 				.status 401
-				.send 'User not found'
+				.send 
+					message:'User not found'
 			else	
 				user.comparePassword password,(err,isMatch)->
 					if err then res.send err
@@ -98,13 +102,14 @@ module.exports = (app)->
 					if isMatch
 
 						token = createJWT(email_id,user.username,user._id)
-						json =
-							'token':token
-						res.send json
+						res.send
+							token:token
+							message:'Login Successful'
 					else
 						res
 						.status 401
-						.send 'Incorrect Password'
+						.send 
+							message:'Incorrect Password'
 
 	app.post api_prefix+'/auth/facebook',(req,res)->
 		fields = ['id', 'email', 'link', 'name']
@@ -146,8 +151,14 @@ module.exports = (app)->
 							user.email_id = profile.email
 
 							user.save (err,savedUser)->
-								token = createJWT(user.email_id,user.username,savedUser._id);
-								res.send token: token
+								if err 
+									res.send
+										message:err
+								else
+									token = createJWT(user.email_id,user.username,savedUser._id);
+									res.send 
+										token: token
+										message:'Logged in through Facebook'
 
 				else
 					User.findOne
@@ -158,10 +169,14 @@ module.exports = (app)->
 								existingUser.social_id.facebook = profile.id
 								existingUser.save (err)->
 									if err
-										res.send err
+										res
+										.send 
+											message:err
 
 							token = createJWT(existingUser.email_id,existingUser.username,existingUser._id);
-							res.send token: token
+							res.send 
+								token: token
+								message:'Logged in through Facebook'
 
 						else
 							user=new User()
@@ -170,7 +185,9 @@ module.exports = (app)->
 							user.email_id = profile.email
 							user.save (err,savedUser)->
 								token = createJWT(user.email_id,user.username,savedUser._id);
-								res.send token: token	
+								res.send
+									token: token
+									message:'Logged in through Facebook'
 
 	app.post api_prefix+'/auth/google',(req,res)->
 		accessTokenUrl = 'https://accounts.google.com/o/oauth2/token';
@@ -218,8 +235,15 @@ module.exports = (app)->
 							user.email_id = profile.email
 
 							user.save (err,savedUser)->
-								token = createJWT(user.email_id,user.username,savedUser._id);
-								res.send token: token
+								if err 
+									res.send
+										message:err
+								else
+											
+									token = createJWT(user.email_id,user.username,savedUser._id);
+									res.send 
+										token: token
+										message:'Logged in through Google'
 
 				else
 					# Step 3b. Create a new user account or return an existing one.
@@ -232,10 +256,13 @@ module.exports = (app)->
 								existingUser.social_id.google = profile.sub
 								existingUser.save (err)->
 									if err
-										res.send err
+										res.send
+											message:err
 
 							token = createJWT(existingUser.email_id,existingUser.username,existingUser._id);
-							res.send token: token
+							res.send 
+								token: token
+								message:'Logged in through Google'
 
 						else
 							user=new User()
@@ -244,7 +271,9 @@ module.exports = (app)->
 							user.email_id = profile.email
 							user.save (err,savedUser)->
 								token = createJWT(user.email_id,user.username,savedUser._id);
-								res.send token: token	
+								res.send
+									token: token
+									message:'Logged in through Google'
 
 	app.post api_prefix+'/refresh',ensureAuthenticated,(req,res)->
 		
@@ -260,7 +289,8 @@ module.exports = (app)->
 		catch err
 			res
 			.status 401
-			.send err
+			.send 
+				message:err
 
 	app.post api_prefix+'/recoverPassword',(req,res)->
 		email_id=req.body.email_id
@@ -301,7 +331,7 @@ module.exports = (app)->
 							else
 								res.status 200
 								.send
-									message:'Message Sent. Please check your Inbox'
+									message:'Please check your Inbox'
 				
 	app.post api_prefix+'/updatePassword',(req,res)->
 		email_id = req.body.email_id

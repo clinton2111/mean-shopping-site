@@ -1,6 +1,6 @@
 (function() {
   angular.module('meanShoppingApp.authentication', ['angularValidator']).controller('authenticationController', [
-    '$scope', '$auth', '$localStorage', 'md5', '$stateParams', 'authenticationService', function($scope, $auth, $localStorage, md5, $stateParams, authenticationService) {
+    '$scope', '$auth', '$localStorage', 'md5', '$stateParams', 'authenticationService', 'toastrService', function($scope, $auth, $localStorage, md5, $stateParams, authenticationService, toastrService) {
       if ($stateParams.type === 'recovery' && !_.isUndefined($stateParams.value) && !_.isUndefined($stateParams.email)) {
         $scope.recovery_screen = true;
         $scope.header = 'Reset Password';
@@ -8,11 +8,7 @@
         $scope.recovery_screen = false;
         $scope.header = 'Login';
       }
-      $scope.loginError = null;
-      $scope.signUpError = null;
       $scope.username = null;
-      $scope.recoverStatus = null;
-      $scope.updateStatus = null;
       $scope.signUp = function(data) {
         var payload;
         payload = {
@@ -33,9 +29,10 @@
           $scope.signup.confirmPassword = '';
           $auth.setToken(data);
           $scope.isAuthenticated();
-          return $('#SignUp').modal('hide');
+          $('#SignUp').modal('hide');
+          return toastrService.createToast('success', data.data.message, 'Welcome');
         }, function(error) {
-          return $scope.signUpError = error.data;
+          return toastrService.createToast('error', error.data.message, 'Error');
         });
       };
       $scope.logIn = function(data) {
@@ -51,19 +48,20 @@
         ]).then(function(data) {
           $localStorage.resetDate = moment().format('DD-MM-YYYY');
           $scope.isAuthenticated();
-          return $('#Login').modal('hide');
+          $('#Login').modal('hide');
+          return toastrService.createToast('success', data.data.message, 'Welcome');
         }, function(error) {
-          return $scope.loginError = error.data;
+          return toastrService.createToast('error', error.data.message, 'Error');
         });
       };
       $scope.authenticate = function(provider) {
         return $auth.authenticate(provider).then(function(data) {
-          console.log('You have logged in with ' + provider);
           if ($('#Login').is(':visible')) {
-            return $('#Login').modal('hide');
+            $('#Login').modal('hide');
           }
+          return toastrService.createToast('success', data.data.message, 'Welcome');
         }, function(error) {
-          return console.log(error);
+          return toastrService.createToast('error', error.data.message, 'Error');
         });
       };
       $scope.toggleForgotPass = function() {
@@ -77,15 +75,9 @@
       };
       $scope.recoverPassword = function(recovery) {
         return authenticationService.recoverPassword(recovery).then(function(data) {
-          return $scope.recoverStatus = {
-            status: data.data.message,
-            flag: 'success'
-          };
+          return toastrService.createToast('success', data.data.message, 'Message Sent');
         }, function(error) {
-          return $scope.recoverStatus = {
-            status: error.data.message,
-            flag: 'error'
-          };
+          return toastrService.createToast('error', error.data.message, 'Error');
         });
       };
       $scope.updatePassword = function(data) {
@@ -95,15 +87,9 @@
           temp_password: $stateParams.value
         };
         return authenticationService.updatePassword(data).then(function(data) {
-          return $scope.updateStatus = {
-            status: data.data.message,
-            flag: 'success'
-          };
+          return toastrService.createToast('success', data.data.message, 'Success');
         }, function(error) {
-          return $scope.updateStatus = {
-            status: data.data.message,
-            flag: 'success'
-          };
+          return toastrService.createToast('error', error.data.message, 'Error');
         });
       };
       $scope.isAuthenticated = function() {
@@ -134,7 +120,8 @@
       };
       $scope.logout = function() {
         $auth.logout();
-        return $scope.username = null;
+        $scope.username = null;
+        return toastrService.createToast('success', 'Hope to see you back soon.', 'You have been logged out');
       };
       return $scope.$watch(['username'], function() {
         return $scope.$apply;

@@ -58,31 +58,35 @@ body h1, body h2, body h3, body h4, body h5, body h6 {
 }
 
 /* line 2, ../sass/modules/_navbar.scss */
+.navbar .icon-bar {
+  background-color: #14213d;
+}
+/* line 5, ../sass/modules/_navbar.scss */
 .navbar .navbar-brand {
   max-width: 200px;
   margin-top: -5px;
 }
-/* line 5, ../sass/modules/_navbar.scss */
+/* line 8, ../sass/modules/_navbar.scss */
 .navbar .navbar-brand #Logo {
   width: 100%;
 }
-/* line 9, ../sass/modules/_navbar.scss */
+/* line 12, ../sass/modules/_navbar.scss */
 .navbar #search {
   text-align: center;
 }
-/* line 11, ../sass/modules/_navbar.scss */
+/* line 14, ../sass/modules/_navbar.scss */
 .navbar #search .form-control {
   width: 500px;
 }
 
 @media (max-width: 933px) {
-  /* line 20, ../sass/modules/_navbar.scss */
+  /* line 23, ../sass/modules/_navbar.scss */
   .navbar #search .form-control {
     width: 300px;
   }
 }
 @media (max-width: 790px) {
-  /* line 30, ../sass/modules/_navbar.scss */
+  /* line 33, ../sass/modules/_navbar.scss */
   .navbar #search .form-control {
     width: 100%;
   }
