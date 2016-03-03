@@ -1,4 +1,4 @@
-/*! mean-shopping-site - v1.0.0 - 2016-03-02 */(function() {
+/*! mean-shopping-site - v1.0.0 - 2016-03-03 */(function() {
   angular.module('meanShoppingApp', ['ui.router', 'meanShoppingApp.authentication', 'meanShoppingApp.home', 'satellizer', 'ngStorage', 'angular-md5']).config([
     '$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider', 'apiPrefix', '$httpProvider', function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider, apiPrefix, $httpProvider) {
       $stateProvider.state('home', {
@@ -117,13 +117,13 @@
       $scope.loginError = null;
       $scope.signUpError = null;
       $scope.username = null;
-      $scope.signUp = function() {
+      $scope.signUp = function(data) {
         var payload;
         payload = {
-          username: $scope.signup.username,
-          phone_number: $scope.signup.phone_number,
-          email_id: $scope.signup.email_id,
-          password: md5.createHash($scope.signup.password || '')
+          username: data.username,
+          phone_number: data.phone_number,
+          email_id: data.email_id,
+          password: md5.createHash(data.password || '')
         };
         return $auth.signup(payload, [
           {
@@ -135,7 +135,6 @@
           $scope.signup.email_id = '';
           $scope.signup.password = '';
           $scope.signup.confirmPassword = '';
-          payload = {};
           $auth.setToken(data);
           $scope.isAuthenticated();
           return $('#SignUp').modal('hide');
@@ -143,11 +142,11 @@
           return $scope.signUpError = error.data;
         });
       };
-      $scope.logIn = function() {
+      $scope.logIn = function(data) {
         var payload;
         payload = {
-          email_id: $scope.login.email_id,
-          password: md5.createHash($scope.login.password || '')
+          email_id: data.email_id,
+          password: md5.createHash(data.password || '')
         };
         return $auth.login(payload, [
           {
@@ -155,9 +154,6 @@
           }
         ]).then(function(data) {
           $localStorage.resetDate = moment().format('DD-MM-YYYY');
-          $scope.login.email_id = '';
-          $scope.login.password = '';
-          payload = {};
           $scope.isAuthenticated();
           return $('#Login').modal('hide');
         }, function(error) {
@@ -166,7 +162,10 @@
       };
       $scope.authenticate = function(provider) {
         return $auth.authenticate(provider).then(function(data) {
-          return console.log('You have logged in with ' + provider);
+          console.log('You have logged in with ' + provider);
+          if ($('#Login').is(':visible')) {
+            return $('#Login').modal('hide');
+          }
         }, function(error) {
           return console.log(error);
         });

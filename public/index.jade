@@ -75,7 +75,7 @@ html(ng-app="meanShoppingApp")
 			.modal.fade#SignUp( tabindex="-1")
 								.modal-dialog
 									.modal-content
-										form(angular-validator-submit="signUp()" name="signUpForm" novalidate angular-validator)
+										form(angular-validator-submit="signUp(signup)" name="signUpForm" novalidate angular-validator)
 											.modal-header
 												button(type="button" class="close" data-dismiss="modal")
 													span &times;
@@ -110,7 +110,7 @@ html(ng-app="meanShoppingApp")
 			.modal.fade#Login( tabindex="-1")
 					.modal-dialog
 						.modal-content
-							form(angular-validator-submit="logIn()" name="loginForm" novalidate angular-validator)
+							form(angular-validator-submit="logIn(login)" name="loginForm" novalidate angular-validator)
 								.modal-header
 									button(type="button" class="close" data-dismiss="modal")
 										span &times;

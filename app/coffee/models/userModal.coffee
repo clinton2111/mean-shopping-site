@@ -42,24 +42,24 @@ UserSchema.pre 'save',(next)->
 	if !this.created_at then this.created_at = now 
 
 	user = this
-	if !((u.isUndefined this.password) || (u.isNull this.password) || (this.password is ""))
-		# only hash the password if it has been modified (or is new)
-		if  !user.isModified('password') then next()
-		else
-			bcrypt.genSalt SALT_WORK_FACTOR,(err,salt)->
-				if err then next(err)
+		
+	# only hash the password if it has been modified (or is new)
+	if  !user.isModified('password') then next()
+	else
+		bcrypt.genSalt SALT_WORK_FACTOR,(err,salt)->
+			if err then next(err)
 
-				bcrypt.hash user.password,salt,null,(err,hash)->
-					if err then return next(err)
+			bcrypt.hash user.password,salt,null,(err,hash)->
+				if err then return next(err)
 
-					# override cleartext with hash
-					user.password = hash
-	next()
+				# override cleartext with hash
+				user.password = hash
+				next()
 
 UserSchema.methods.comparePassword = (candidatePassword,cb)->
 	bcrypt.compare candidatePassword,this.password,(err, isMatch)->
 		if err then return cb(err)
-		cb null,isMatch
+		cb err,isMatch
 
 titleCase = (str)->
     str.replace /\w\S*/g,(txt)->

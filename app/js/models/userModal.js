@@ -55,24 +55,22 @@
       this.created_at = now;
     }
     user = this;
-    if (!((u.isUndefined(this.password)) || (u.isNull(this.password)) || (this.password === ""))) {
-      if (!user.isModified('password')) {
-        next();
-      } else {
-        bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+    if (!user.isModified('password')) {
+      return next();
+    } else {
+      return bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+        if (err) {
+          next(err);
+        }
+        return bcrypt.hash(user.password, salt, null, function(err, hash) {
           if (err) {
-            next(err);
+            return next(err);
           }
-          return bcrypt.hash(user.password, salt, null, function(err, hash) {
-            if (err) {
-              return next(err);
-            }
-            return user.password = hash;
-          });
+          user.password = hash;
+          return next();
         });
-      }
+      });
     }
-    return next();
   });
 
   UserSchema.methods.comparePassword = function(candidatePassword, cb) {
@@ -80,7 +78,7 @@
       if (err) {
         return cb(err);
       }
-      return cb(null, isMatch);
+      return cb(err, isMatch);
     });
   };
 

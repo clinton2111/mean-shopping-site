@@ -12,12 +12,12 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 	$scope.signUpError = null
 	$scope.username = null
 	
-	$scope.signUp=()->
+	$scope.signUp=(data)->
 		payload=
-			username:$scope.signup.username
-			phone_number:$scope.signup.phone_number
-			email_id:$scope.signup.email_id
-			password:md5.createHash $scope.signup.password || ''
+			username:data.username
+			phone_number:data.phone_number
+			email_id:data.email_id
+			password:md5.createHash data.password || ''
 
 		$auth.signup payload,[skipAuthorization: true]
 		.then (data)->
@@ -26,24 +26,20 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 			$scope.signup.email_id = ''
 			$scope.signup.password = ''
 			$scope.signup.confirmPassword = ''
-			payload = {}
 			$auth.setToken data
 			$scope.isAuthenticated()
 			$('#SignUp').modal('hide')
 		, (error)->
 			$scope.signUpError = error.data
 
-	$scope.logIn=()->
+	$scope.logIn=(data)->
 		payload=
-			email_id:$scope.login.email_id
-			password:md5.createHash $scope.login.password || ''
+			email_id:data.email_id
+			password:md5.createHash data.password || ''
 
 		$auth.login payload,[skipAuthorization: true]
 		.then (data)->
 			$localStorage.resetDate = moment().format('DD-MM-YYYY')
-			$scope.login.email_id = ''
-			$scope.login.password = ''
-			payload = {}
 			$scope.isAuthenticated()
 			$('#Login').modal('hide')
 		, (error)->
@@ -53,6 +49,7 @@ angular.module 'meanShoppingApp.authentication',['angularValidator']
 		$auth.authenticate(provider)
 		.then (data)->
 			console.log 'You have logged in with '+provider
+			if $('#Login').is(':visible') then $('#Login').modal('hide')
 		, (error)->
 			console.log error
     

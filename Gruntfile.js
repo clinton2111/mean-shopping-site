@@ -221,7 +221,7 @@ module.exports = function(grunt) {
                 options: {
                     sassDir: frontend_sass_src,
                     cssDir: frontend_css_src,
-                    imagesDir: 'assets',
+                    imagesDir: './assets',
                     environment: 'development',
                     outputStyle: 'expanded',
                     require: sass_require

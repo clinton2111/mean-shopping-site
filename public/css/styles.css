@@ -87,7 +87,13 @@ body h1, body h2, body h3, body h4, body h5, body h6 {
     width: 100%;
   }
 }
-/* line 2, ../sass/modules/_auth.scss */
+/* line 1, ../sass/modules/_auth.scss */
+.container-flex {
+  background-image: url(/./assets/website_images/backgrounds/evolve_2015.jpg);
+  background-size: cover;
+  background-position: center;
+}
+/* line 5, ../sass/modules/_auth.scss */
 .container-flex .centerXY {
   height: 100vh;
   display: -webkit-box;
@@ -97,79 +103,73 @@ body h1, body h2, body h3, body h4, body h5, body h6 {
   display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-  -moz-box-pack: center;
-  box-pack: center;
   -webkit-justify-content: center;
-  -moz-justify-content: center;
-  -ms-justify-content: center;
-  -o-justify-content: center;
   justify-content: center;
-  -ms-flex-pack: center;
-  -webkit-box-align: center;
-  -moz-box-align: center;
-  box-align: center;
   -webkit-align-items: center;
-  -moz-align-items: center;
-  -ms-align-items: center;
-  -o-align-items: center;
   align-items: center;
-  -ms-flex-align: center;
-  -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
-  box-orient: vertical;
-  -webkit-box-direction: normal;
-  -moz-box-direction: normal;
-  box-direction: normal;
-  -webkit-flex-direction: column;
-  -moz-flex-direction: column;
-  flex-direction: column;
-  -ms-flex-direction: column;
 }
-/* line 8, ../sass/modules/_auth.scss */
-.container-flex .centerXY .form-group {
-  width: 600px;
+/* line 10, ../sass/modules/_auth.scss */
+.container-flex .centerXY .tranparentContainer {
+  width: 100%;
+  max-width: 600px;
+  -moz-box-shadow: rgba(255, 255, 255, 0.4) 0 0 25px, rgba(229, 229, 229, 0.2) 0 0 3px 1px inset;
+  -webkit-box-shadow: rgba(255, 255, 255, 0.4) 0 0 25px, rgba(229, 229, 229, 0.2) 0 0 3px 1px inset;
+  box-shadow: rgba(255, 255, 255, 0.4) 0 0 25px, rgba(229, 229, 229, 0.2) 0 0 3px 1px inset;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.25);
 }
-/* line 13, ../sass/modules/_auth.scss */
-.container-flex form svg {
+/* line 17, ../sass/modules/_auth.scss */
+.container-flex .centerXY .tranparentContainer svg {
+  display: block;
+  margin: 0 auto;
   max-width: 500px;
   width: 100%;
 }
 
-/* line 20, ../sass/modules/_auth.scss */
+/* line 27, ../sass/modules/_auth.scss */
 .signup-or-separator {
   position: relative;
   height: 34px;
   text-align: center;
   background: none;
 }
-/* line 25, ../sass/modules/_auth.scss */
+/* line 32, ../sass/modules/_auth.scss */
 .signup-or-separator .text {
   display: inline-block;
   padding: 8px;
   margin: 0;
-  background-color: #f2f2f2;
+  background-color: #E6E6E6;
 }
-/* line 31, ../sass/modules/_auth.scss */
+/* line 38, ../sass/modules/_auth.scss */
 .signup-or-separator hr {
   width: 90%;
   margin: -16px auto 10px auto;
   border-top: 1px solid #dce0e0;
 }
 
-@media (max-width: 650px) {
-  /* line 40, ../sass/modules/_auth.scss */
-  .container-flex form svg {
-    width: 100%;
-  }
-  /* line 45, ../sass/modules/_auth.scss */
-  .container-flex .centerXY .form-group {
-    width: 100%;
-  }
-}
 @media (max-width: 992px) {
-  /* line 54, ../sass/modules/_auth.scss */
+  /* line 48, ../sass/modules/_auth.scss */
   .form-group .row a {
     margin-bottom: 5px;
+  }
+}
+@media (max-width: 650px) {
+  /* line 56, ../sass/modules/_auth.scss */
+  .container-flex {
+    background: none;
+    background-color: #e5e5e5;
+  }
+  /* line 60, ../sass/modules/_auth.scss */
+  .container-flex .centerXY .tranparentContainer {
+    background-color: transparent;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    width: 100%;
+  }
+
+  /* line 68, ../sass/modules/_auth.scss */
+  .signup-or-separator .text {
+    background-color: #e5e5e5;
   }
 }

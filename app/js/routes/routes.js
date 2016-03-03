@@ -158,7 +158,7 @@
             }, function(err, existingUser) {
               var token, user;
               if (existingUser) {
-                if (existingUser.facebook || (u.isUndefined(existingUser.facebook)) || (u.isNull(existingUser.facebook))) {
+                if ((!existingUser.facebook) || (u.isUndefined(existingUser.facebook)) || (u.isNull(existingUser.facebook))) {
                   existingUser.facebook = profile.id;
                   existingUser.save(function(err) {
                     if (err) {
@@ -247,7 +247,7 @@
             }, function(err, existingUser) {
               var user;
               if (existingUser) {
-                if (existingUser.google || (u.isUndefined(existingUser.google)) || (u.isNull(existingUser.google))) {
+                if ((!existingUser.google) || (u.isUndefined(existingUser.google)) || (u.isNull(existingUser.google))) {
                   existingUser.google = profile.sub;
                   existingUser.save(function(err) {
                     if (err) {

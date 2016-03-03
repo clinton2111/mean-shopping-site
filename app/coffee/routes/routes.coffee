@@ -130,7 +130,7 @@ module.exports = (app)->
 						email_id:profile.email
 					,(err,existingUser)->
 						if existingUser
-							if (existingUser.facebook) || (u.isUndefined existingUser.facebook) || (u.isNull existingUser.facebook)
+							if (!existingUser.facebook) || (u.isUndefined existingUser.facebook) || (u.isNull existingUser.facebook)
 								existingUser.facebook = profile.id
 								existingUser.save (err)->
 									if err
@@ -204,7 +204,7 @@ module.exports = (app)->
 					,(err,existingUser)->
 						if existingUser
 							
-							if (existingUser.google) || (u.isUndefined existingUser.google) || (u.isNull existingUser.google)
+							if (!existingUser.google) || (u.isUndefined existingUser.google) || (u.isNull existingUser.google)
 								existingUser.google = profile.sub
 								existingUser.save (err)->
 									if err
