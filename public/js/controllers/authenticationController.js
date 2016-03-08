@@ -1,6 +1,6 @@
 (function() {
   angular.module('meanShoppingApp.authentication', ['angularValidator']).controller('authenticationController', [
-    '$scope', '$auth', '$localStorage', 'md5', '$stateParams', 'authenticationService', 'toastrService', function($scope, $auth, $localStorage, md5, $stateParams, authenticationService, toastrService) {
+    '$scope', '$auth', '$localStorage', 'md5', '$stateParams', 'authenticationService', 'toastrService', '$state', function($scope, $auth, $localStorage, md5, $stateParams, authenticationService, toastrService, $state) {
       if ($stateParams.type === 'recovery' && !_.isUndefined($stateParams.value) && !_.isUndefined($stateParams.email)) {
         $scope.recovery_screen = true;
         $scope.header = 'Reset Password';
@@ -49,7 +49,8 @@
           $localStorage.resetDate = moment().format('DD-MM-YYYY');
           $scope.isAuthenticated();
           $('#Login').modal('hide');
-          return toastrService.createToast('success', data.data.message, 'Welcome');
+          toastrService.createToast('success', data.data.message, 'Welcome');
+          return $state.go('account.settings');
         }, function(error) {
           return toastrService.createToast('error', error.data.message, 'Error');
         });
@@ -59,7 +60,8 @@
           if ($('#Login').is(':visible')) {
             $('#Login').modal('hide');
           }
-          return toastrService.createToast('success', data.data.message, 'Welcome');
+          toastrService.createToast('success', data.data.message, 'Welcome');
+          return $state.go('account.settings');
         }, function(error) {
           return toastrService.createToast('error', error.data.message, 'Error');
         });
@@ -121,7 +123,8 @@
       $scope.logout = function() {
         $auth.logout();
         $scope.username = null;
-        return toastrService.createToast('success', 'Hope to see you back soon.', 'You have been logged out');
+        toastrService.createToast('success', 'Hope to see you back soon.', 'You have been logged out');
+        return $state.go('home');
       };
       return $scope.$watch(['username'], function() {
         return $scope.$apply;

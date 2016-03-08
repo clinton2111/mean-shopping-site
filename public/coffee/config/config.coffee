@@ -7,11 +7,26 @@ angular.module 'meanShoppingApp',['ui.router','meanShoppingApp.authentication','
 		controller:'homeController'
 
 	.state 'auth',
-      url: '/auth/:type/:email/:value'
-      templateUrl: 'html/auth.html'
-      controller: 'authenticationController'
+		url: '/auth/:type/:email/:value'
+		templateUrl: 'html/auth.html'
+		controller: 'authenticationController'
+
+	.state 'account',
+		url:'/account'
+		abstract: true
+		templateUrl:'html/account.html'
+		data:
+			requiresLogin: true
+
+	.state 'account.settings',
+		url:''
+		templateUrl:'html/accountsettings.html'
+		data:
+			requiresLogin:true
+
 	
 	$urlRouterProvider.otherwise '/home'
+	$urlRouterProvider.when 'account', 'account.settings'
 
 	# $locationProvider.html5Mode
  #  		enabled: true
@@ -33,11 +48,11 @@ angular.module 'meanShoppingApp',['ui.router','meanShoppingApp.authentication','
 		positionClass: 'toast-top-center'
 		timeOut: 4000
 
-    
+	
 ]
 .constant 'apiPrefix','/api'
 
-.run ['$rootScope','$state','$http','apiPrefix','$q','$localStorage','$auth',($rootScope,state,$http,apiPrefix,$q,localStorage,$auth)->
+.run ['$rootScope','$state','$http','apiPrefix','$q','$localStorage','$auth',($rootScope,$state,$http,apiPrefix,$q,$localStorage,$auth)->
 	$rootScope.$on '$stateChangeStart', (e, to)->
 		refreshToken=->
 			q=$q.defer()
@@ -54,7 +69,7 @@ angular.module 'meanShoppingApp',['ui.router','meanShoppingApp.authentication','
 			if $auth.isAuthenticated() is false
 				e.preventDefault()
 				$state.go 'auth',
-					type:login
+					type:'login'
 					email:null
 					value:null
 			else
@@ -82,9 +97,8 @@ angular.module 'meanShoppingApp',['ui.router','meanShoppingApp.authentication','
 						e.preventDefault()
 
 		if (to.templateUrl is 'html/auth.html') and ($auth.isAuthenticated() is true)
-			console.log 'Go Home'
-			e.preventDefault
-			# $state.go 'account.home'
+			e.preventDefault()
+			$state.go 'account.settings'
 
 ]
 

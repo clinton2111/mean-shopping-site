@@ -1,6 +1,8 @@
+
 body {
 	background-color:lighten($shadow,5%);
 	padding-top: 50px;
+	height: 100%;
 	.navbar{
 		background-color:$white;
 		border-color:$shadow;

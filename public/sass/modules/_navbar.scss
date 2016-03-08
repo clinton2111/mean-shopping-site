@@ -1,38 +1,65 @@
 .navbar {
-    .icon-bar {
-        background-color: $text
-    }
-    .navbar-brand {
-        max-width: 200px;
-        margin-top: -5px;
-        #Logo {
-            width: 100%;
-        }
-    }
-    #search {
-        text-align: center;
-        .form-control {
-            width: 500px
-        }
-    }
+	.navbar-toggle{
+		padding: 13px 15px;
+		.icon-bar,.icon-bar:before,.icon-bar:after {
+			content: "";
+			display: block;
+			height: 2px;
+			background:$text;
+			position: relative;
+			transition: all 0.3s ease-in-out
+		}
+		.icon-bar:before{
+			top:09px
+		}
+		.icon-bar:after{
+			top:-11px
+		}
+		&:not(.collapsed) .icon-bar{
+			background:transparent
+		}
+		&:not(.collapsed) .icon-bar:before,&:not(.collapsed) .icon-bar:after{
+			transform-origin: center;
+			transform: rotate(45deg);
+			top:0
+		}
+		&:not(.collapsed) .icon-bar:after{
+			top:-2px;
+			transform: rotate(-45deg);
+		}
+	}
+	
+	.navbar-brand {
+		max-width: 200px;
+		margin-top: -5px;
+		#Logo {
+			width: 100%;
+		}
+	}
+	#search {
+		text-align: center;
+		.form-control {
+			width: 500px
+		}
+	}
 }
 
 @media (max-width: 933px) {
-    .navbar {
-        #search {
-            .form-control {
-                width: 300px
-            }
-        }
-    }
+	.navbar {
+		#search {
+			.form-control {
+				width: 300px
+			}
+		}
+	}
 }
 
 @media (max-width: 790px) {
-    .navbar {
-        #search {
-            .form-control {
-                width: 100%
-            }
-        }
-    }
+	.navbar {
+		#search {
+			.form-control {
+				width: 100%
+			}
+		}
+	}
 }

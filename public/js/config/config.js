@@ -9,8 +9,22 @@
         url: '/auth/:type/:email/:value',
         templateUrl: 'html/auth.html',
         controller: 'authenticationController'
+      }).state('account', {
+        url: '/account',
+        abstract: true,
+        templateUrl: 'html/account.html',
+        data: {
+          requiresLogin: true
+        }
+      }).state('account.settings', {
+        url: '',
+        templateUrl: 'html/accountsettings.html',
+        data: {
+          requiresLogin: true
+        }
       });
       $urlRouterProvider.otherwise('/home');
+      $urlRouterProvider.when('account', 'account.settings');
       $authProvider.loginUrl = apiPrefix + '/authenticate';
       $authProvider.signupUrl = apiPrefix + '/signUp';
       $authProvider.tokenPrefix = 'meanShoppingApp';
@@ -30,7 +44,7 @@
       });
     }
   ]).constant('apiPrefix', '/api').run([
-    '$rootScope', '$state', '$http', 'apiPrefix', '$q', '$localStorage', '$auth', function($rootScope, state, $http, apiPrefix, $q, localStorage, $auth) {
+    '$rootScope', '$state', '$http', 'apiPrefix', '$q', '$localStorage', '$auth', function($rootScope, $state, $http, apiPrefix, $q, $localStorage, $auth) {
       return $rootScope.$on('$stateChangeStart', function(e, to) {
         var lastUpdate, refreshToken, refreshTokenFlag;
         refreshToken = function() {
@@ -48,7 +62,7 @@
           if ($auth.isAuthenticated() === false) {
             e.preventDefault();
             $state.go('auth', {
-              type: login,
+              type: 'login',
               email: null,
               value: null
             });
@@ -82,8 +96,8 @@
           }
         }
         if ((to.templateUrl === 'html/auth.html') && ($auth.isAuthenticated() === true)) {
-          console.log('Go Home');
-          return e.preventDefault;
+          e.preventDefault();
+          return $state.go('account.settings');
         }
       });
     }

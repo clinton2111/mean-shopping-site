@@ -1,4 +1,4 @@
-/*! mean-shopping-site - v1.0.0 - 2016-03-04 */(function() {
+/*! mean-shopping-site - v1.0.0 - 2016-03-08 */(function() {
   angular.module('meanShoppingApp', ['ui.router', 'meanShoppingApp.authentication', 'meanShoppingApp.home', 'satellizer', 'ngStorage', 'angular-md5', 'meanShoppingApp.toastr']).config([
     '$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider', 'apiPrefix', '$httpProvider', 'toastrConfig', function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider, apiPrefix, $httpProvider, toastrConfig) {
       $stateProvider.state('home', {
@@ -9,8 +9,22 @@
         url: '/auth/:type/:email/:value',
         templateUrl: 'html/auth.html',
         controller: 'authenticationController'
+      }).state('account', {
+        url: '/account',
+        abstract: true,
+        templateUrl: 'html/account.html',
+        data: {
+          requiresLogin: true
+        }
+      }).state('account.settings', {
+        url: '',
+        templateUrl: 'html/accountsettings.html',
+        data: {
+          requiresLogin: true
+        }
       });
       $urlRouterProvider.otherwise('/home');
+      $urlRouterProvider.when('account', 'account.settings');
       $authProvider.loginUrl = apiPrefix + '/authenticate';
       $authProvider.signupUrl = apiPrefix + '/signUp';
       $authProvider.tokenPrefix = 'meanShoppingApp';
@@ -30,7 +44,7 @@
       });
     }
   ]).constant('apiPrefix', '/api').run([
-    '$rootScope', '$state', '$http', 'apiPrefix', '$q', '$localStorage', '$auth', function($rootScope, state, $http, apiPrefix, $q, localStorage, $auth) {
+    '$rootScope', '$state', '$http', 'apiPrefix', '$q', '$localStorage', '$auth', function($rootScope, $state, $http, apiPrefix, $q, $localStorage, $auth) {
       return $rootScope.$on('$stateChangeStart', function(e, to) {
         var lastUpdate, refreshToken, refreshTokenFlag;
         refreshToken = function() {
@@ -48,7 +62,7 @@
           if ($auth.isAuthenticated() === false) {
             e.preventDefault();
             $state.go('auth', {
-              type: login,
+              type: 'login',
               email: null,
               value: null
             });
@@ -82,8 +96,8 @@
           }
         }
         if ((to.templateUrl === 'html/auth.html') && ($auth.isAuthenticated() === true)) {
-          console.log('Go Home');
-          return e.preventDefault;
+          e.preventDefault();
+          return $state.go('account.settings');
         }
       });
     }
@@ -110,7 +124,7 @@
 
 (function() {
   angular.module('meanShoppingApp.authentication', ['angularValidator']).controller('authenticationController', [
-    '$scope', '$auth', '$localStorage', 'md5', '$stateParams', 'authenticationService', 'toastrService', function($scope, $auth, $localStorage, md5, $stateParams, authenticationService, toastrService) {
+    '$scope', '$auth', '$localStorage', 'md5', '$stateParams', 'authenticationService', 'toastrService', '$state', function($scope, $auth, $localStorage, md5, $stateParams, authenticationService, toastrService, $state) {
       if ($stateParams.type === 'recovery' && !_.isUndefined($stateParams.value) && !_.isUndefined($stateParams.email)) {
         $scope.recovery_screen = true;
         $scope.header = 'Reset Password';
@@ -159,7 +173,8 @@
           $localStorage.resetDate = moment().format('DD-MM-YYYY');
           $scope.isAuthenticated();
           $('#Login').modal('hide');
-          return toastrService.createToast('success', data.data.message, 'Welcome');
+          toastrService.createToast('success', data.data.message, 'Welcome');
+          return $state.go('account.settings');
         }, function(error) {
           return toastrService.createToast('error', error.data.message, 'Error');
         });
@@ -169,7 +184,8 @@
           if ($('#Login').is(':visible')) {
             $('#Login').modal('hide');
           }
-          return toastrService.createToast('success', data.data.message, 'Welcome');
+          toastrService.createToast('success', data.data.message, 'Welcome');
+          return $state.go('account.settings');
         }, function(error) {
           return toastrService.createToast('error', error.data.message, 'Error');
         });
@@ -231,7 +247,8 @@
       $scope.logout = function() {
         $auth.logout();
         $scope.username = null;
-        return toastrService.createToast('success', 'Hope to see you back soon.', 'You have been logged out');
+        toastrService.createToast('success', 'Hope to see you back soon.', 'You have been logged out');
+        return $state.go('home');
       };
       return $scope.$watch(['username'], function() {
         return $scope.$apply;

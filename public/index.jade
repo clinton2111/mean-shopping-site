@@ -16,6 +16,7 @@ html(ng-app="meanShoppingApp")
 		link(rel='stylesheet' href='../bower_components/font-awesome/css/font-awesome.min.css')
 		link(rel='stylesheet' href='../bower_components/bootstrap-social/bootstrap-social.css')
 		link(rel='stylesheet' href='../bower_components/angular-toastr/dist/angular-toastr.min.css')
+		link(rel='stylesheet' href='./bower_components/font-awesome/css/font-awesome.min.css')
 		link(rel='stylesheet' href='css/styles.css')
 
 		//- Uncomment in Production
@@ -30,8 +31,6 @@ html(ng-app="meanShoppingApp")
 					.navbar-header
 						button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#mobile-navbar-collapse', aria-expanded='false')
 							span.sr-only Toggle navigation
-							span.icon-bar
-							span.icon-bar
 							span.icon-bar
 						a.navbar-brand(href='#')
 							+logoSVG()
@@ -144,7 +143,49 @@ html(ng-app="meanShoppingApp")
 
 		
 		
-		footer
+		footer.footer-distributed
+			.footer-left
+				span
+					+logoSVG()
+				p.footer-links
+					a(href='#') Home
+					| 					·#{' '}
+					a(href='#') Products
+					| 					·#{' '}
+					a(href='#') About
+					| 					·#{' '}
+					a(href='#') Faq
+					| 					·#{' '}
+					a(href='#') Contact
+				p.footer-company-name Gameland © 2015
+			.footer-center
+				div
+					i.fa.fa-map-marker
+					p
+						span 
+						|  21 Super Noob Street, Porvorim, Goa
+				div
+					i.fa.fa-phone
+					p 1800-(IAM)-(MAD)
+				div
+					i.fa.fa-envelope
+					p
+						a(href='mailto:support@gameland.com') support@gameland.com
+			.footer-right
+				p.footer-company-about
+					span About the company
+					| 					Started in Feburary 2016 as a practice application to learn the MEAN Stack. Currently March 2016 and still trying to learn the Mean Stack. Yeah Thuglife Bitches.
+				.footer-icons
+					a(href='#')
+						i.fa.fa-facebook
+					a(href='#')
+						i.fa.fa-twitter
+					a(href='#')
+						i.fa.fa-instagram
+					a(href='#')
+						i.fa.fa-google
+
+			
 	
 		script(src="../bower_components/holderjs/holder.min.js")
 		script(src="../bower_components/modernizr/bin/modernizr")
