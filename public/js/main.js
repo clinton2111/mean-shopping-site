@@ -1,5 +1,5 @@
-/*! mean-shopping-site - v1.0.0 - 2016-03-08 */(function() {
-  angular.module('meanShoppingApp', ['ui.router', 'meanShoppingApp.authentication', 'meanShoppingApp.home', 'satellizer', 'ngStorage', 'angular-md5', 'meanShoppingApp.toastr']).config([
+/*! mean-shopping-site - v1.0.0 - 2016-03-09 */(function() {
+  angular.module('meanShoppingApp', ['ui.router', 'meanShoppingApp.authentication', 'meanShoppingApp.home', 'meanShoppingApp.account', 'satellizer', 'ngStorage', 'angular-md5', 'meanShoppingApp.toastr', 'meanShoppingApp.directives']).config([
     '$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider', 'apiPrefix', '$httpProvider', 'toastrConfig', function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider, apiPrefix, $httpProvider, toastrConfig) {
       $stateProvider.state('home', {
         url: '/home',
@@ -19,6 +19,7 @@
       }).state('account.settings', {
         url: '',
         templateUrl: 'html/accountsettings.html',
+        controller: 'accountSettingsController',
         data: {
           requiresLogin: true
         }
@@ -119,6 +120,11 @@
       };
     }
   ]);
+
+}).call(this);
+
+(function() {
+  angular.module('meanShoppingApp.account', []).controller('accountSettingsController', ['$scope', function($scope) {}]);
 
 }).call(this);
 
@@ -260,6 +266,22 @@
 
 (function() {
   angular.module('meanShoppingApp.home', []).controller('homeController', ['$scope', function($scope) {}]);
+
+}).call(this);
+
+(function() {
+  angular.module('meanShoppingApp.directives', []).directive('showtab', [
+    function() {
+      return {
+        link: function(scope, element, attrs) {
+          return element.click(function(e) {
+            e.preventDefault();
+            return $(element).tab('show');
+          });
+        }
+      };
+    }
+  ]);
 
 }).call(this);
 

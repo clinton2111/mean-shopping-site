@@ -1,2 +1,21 @@
-.container
-	h1 Inside Account Settings
+.account-settings
+	.container
+		h1 Account Settings
+		
+		.tab-container
+			ul.nav.nav-tabs(role='tablist')
+				li.active(role='presentation')
+					a(showtab,href='#profile', role='tab', data-toggle='tab') Profile
+				li(role='presentation')
+					a(showtab,href='#changePassword',role='tab', data-toggle='tab') Change Password
+				li(role='presentation')
+					a(showtab,href='#addresses', role='tab', data-toggle='tab') Addresses
+
+
+			.tab-content
+				#profile.tab-pane.active(role='tabpanel')
+					h3 Profile
+				#changePassword.tab-pane(role='tabpanel')
+					h3 Change Password
+				#addresses.tab-pane(role='tabpanel')
+					h3 Addresses

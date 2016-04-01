@@ -1,4 +1,4 @@
-angular.module 'meanShoppingApp',['ui.router','meanShoppingApp.authentication','meanShoppingApp.home','satellizer','ngStorage','angular-md5','meanShoppingApp.toastr']
+angular.module 'meanShoppingApp',['ui.router','meanShoppingApp.authentication','meanShoppingApp.home','meanShoppingApp.account','satellizer','ngStorage','angular-md5','meanShoppingApp.toastr','meanShoppingApp.directives']
 .config ['$stateProvider','$urlRouterProvider','$authProvider','$locationProvider','apiPrefix','$httpProvider','toastrConfig',($stateProvider, $urlRouterProvider,$authProvider,$locationProvider,apiPrefix,$httpProvider,toastrConfig)->
 	$stateProvider
 	.state 'home',
@@ -21,6 +21,7 @@ angular.module 'meanShoppingApp',['ui.router','meanShoppingApp.authentication','
 	.state 'account.settings',
 		url:''
 		templateUrl:'html/accountsettings.html'
+		controller:'accountSettingsController'
 		data:
 			requiresLogin:true
 

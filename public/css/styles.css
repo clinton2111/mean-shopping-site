@@ -124,6 +124,17 @@ body h1, body h2, body h3, body h4, body h5, body h6 {
     width: 100%;
   }
 }
+/* line 2, ../sass/modules/_accountSettings.scss */
+.account-settings .container {
+  background-color: #FFFFFF;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+/* line 9, ../sass/modules/_accountSettings.scss */
+.account-settings .container .tab-container {
+  padding-top: 15px;
+}
+
 /* line 1, ../sass/modules/_footer.scss */
 .footer-distributed {
   background-color: #FFFFFF;
@@ -274,14 +285,14 @@ body h1, body h2, body h3, body h4, body h5, body h6 {
     text-align: center;
   }
 }
-/* line 1, ../sass/modules/_auth.scss */
-.container-flex {
+/* line 2, ../sass/modules/_auth.scss */
+.auth .container-flex {
   background-image: url(/./assets/website_images/backgrounds/evolve_2015.jpg);
   background-size: cover;
   background-position: center;
 }
-/* line 5, ../sass/modules/_auth.scss */
-.container-flex .centerXY {
+/* line 6, ../sass/modules/_auth.scss */
+.auth .container-flex .centerXY {
   height: 100vh;
   display: -webkit-box;
   display: -moz-box;
@@ -295,8 +306,8 @@ body h1, body h2, body h3, body h4, body h5, body h6 {
   -webkit-align-items: center;
   align-items: center;
 }
-/* line 10, ../sass/modules/_auth.scss */
-.container-flex .centerXY .tranparentContainer {
+/* line 11, ../sass/modules/_auth.scss */
+.auth .container-flex .centerXY .tranparentContainer {
   width: 100%;
   max-width: 600px;
   -moz-box-shadow: rgba(255, 255, 255, 0.4) 0 0 25px, rgba(229, 229, 229, 0.2) 0 0 3px 1px inset;
@@ -305,58 +316,56 @@ body h1, body h2, body h3, body h4, body h5, body h6 {
   padding: 10px;
   background-color: rgba(255, 255, 255, 0.25);
 }
-/* line 17, ../sass/modules/_auth.scss */
-.container-flex .centerXY .tranparentContainer svg {
+/* line 18, ../sass/modules/_auth.scss */
+.auth .container-flex .centerXY .tranparentContainer svg {
   display: block;
   margin: 0 auto;
   max-width: 500px;
   width: 100%;
 }
-
 /* line 27, ../sass/modules/_auth.scss */
-.signup-or-separator {
+.auth .signup-or-separator {
   position: relative;
   height: 34px;
   text-align: center;
   background: none;
 }
 /* line 32, ../sass/modules/_auth.scss */
-.signup-or-separator .text {
+.auth .signup-or-separator .text {
   display: inline-block;
   padding: 8px;
   margin: 0;
   background-color: #E6E6E6;
 }
 /* line 38, ../sass/modules/_auth.scss */
-.signup-or-separator hr {
+.auth .signup-or-separator hr {
   width: 90%;
   margin: -16px auto 10px auto;
   border-top: 1px solid #dce0e0;
 }
 
 @media (max-width: 992px) {
-  /* line 48, ../sass/modules/_auth.scss */
+  /* line 49, ../sass/modules/_auth.scss */
   .form-group .row a {
     margin-bottom: 5px;
   }
 }
 @media (max-width: 650px) {
-  /* line 56, ../sass/modules/_auth.scss */
-  .container-flex {
+  /* line 58, ../sass/modules/_auth.scss */
+  .auth .container-flex {
     background: none;
     background-color: #e5e5e5;
   }
-  /* line 60, ../sass/modules/_auth.scss */
-  .container-flex .centerXY .tranparentContainer {
+  /* line 62, ../sass/modules/_auth.scss */
+  .auth .container-flex .centerXY .tranparentContainer {
     background-color: transparent;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
     width: 100%;
   }
-
-  /* line 68, ../sass/modules/_auth.scss */
-  .signup-or-separator .text {
+  /* line 70, ../sass/modules/_auth.scss */
+  .auth .signup-or-separator .text {
     background-color: #e5e5e5;
   }
 }

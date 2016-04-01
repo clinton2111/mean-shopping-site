@@ -39,7 +39,7 @@ module.exports = function(grunt) {
     var admin_jade_src = './admin/jade';
 
     //Sass Requires
-    var sass_require = ['bourbon','susy'];
+    var sass_require = ['bourbon','susy','bootstrap-sass'];
 
     var mozjpeg = require('imagemin-mozjpeg');
 

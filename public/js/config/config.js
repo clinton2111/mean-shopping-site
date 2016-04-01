@@ -1,5 +1,5 @@
 (function() {
-  angular.module('meanShoppingApp', ['ui.router', 'meanShoppingApp.authentication', 'meanShoppingApp.home', 'satellizer', 'ngStorage', 'angular-md5', 'meanShoppingApp.toastr']).config([
+  angular.module('meanShoppingApp', ['ui.router', 'meanShoppingApp.authentication', 'meanShoppingApp.home', 'meanShoppingApp.account', 'satellizer', 'ngStorage', 'angular-md5', 'meanShoppingApp.toastr', 'meanShoppingApp.directives']).config([
     '$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider', 'apiPrefix', '$httpProvider', 'toastrConfig', function($stateProvider, $urlRouterProvider, $authProvider, $locationProvider, apiPrefix, $httpProvider, toastrConfig) {
       $stateProvider.state('home', {
         url: '/home',
@@ -19,6 +19,7 @@
       }).state('account.settings', {
         url: '',
         templateUrl: 'html/accountsettings.html',
+        controller: 'accountSettingsController',
         data: {
           requiresLogin: true
         }
